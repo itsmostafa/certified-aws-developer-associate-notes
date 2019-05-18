@@ -5,7 +5,7 @@
 ## Table of contents
 
 - AWS Fundamentals
-    - IAM: Identity Access & Management
+    - [IAM: Identity Access & Management](iam.md)
     - EC2: Virtual Machines
     - ELB: Elastic Load Balancers
     - ASG: Auto Scaling Group
