@@ -47,7 +47,7 @@ It costs less to setup your own load balancer but it will be a lot more effort o
     * ALB supports HTTP/HTTPS & Web sockets protocols
     * The application servers don’t see the IP of the client directly
         * The true IP of the client is inserted in the header X-Forwarded-For
-        * We can also get Port (X-Forwarded-Port) and port (X-Forwarded-Proto)
+        * We can also get Port (X-Forwarded-Port) and protocol (X-Forwarded-Proto)
 #### Network Load Balancer (v2)
 * Layer 4 allow you to do:
     * Forward TCP traffic to your instances
