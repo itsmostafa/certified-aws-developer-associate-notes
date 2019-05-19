@@ -1,12 +1,12 @@
-# certified-aws-developer-associate-notes
+# Certified AWS Associate Developer Notes
 
 ### My notes in preparation for the 2019 AWS developer associate exam 
 
 ## Table of contents
 
 - AWS Fundamentals
-    - [IAM: Identity Access & Management](iam.md)
-    - EC2: Virtual Machines
+    - [IAM: Identity Access & Management](aws-fundamentals/iam.md)
+    - [EC2: Virtual Machines](aws-fundamentals/ec2.md)
     - ELB: Elastic Load Balancers
     - ASG: Auto Scaling Group
     - EBS Volumes
