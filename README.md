@@ -7,7 +7,8 @@
 - AWS Fundamentals
     - [IAM: Identity Access & Management](aws-fundamentals/iam.md)
     - [EC2: Virtual Machines](aws-fundamentals/ec2.md)
-    - ELB: Elastic Load Balancers
+    - [EC2: Virtual Machines](aws-fundamentals/elb.md)
+    - [ELB: Elastic Load Balancers]()
     - ASG: Auto Scaling Group
     - EBS Volumes
     - RDS: Relational Database Service
