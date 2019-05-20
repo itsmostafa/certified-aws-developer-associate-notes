@@ -7,10 +7,10 @@ When accessing AWS, the root account should **never** be used. Users must be cre
 - Policies (JSON documents): Defines what each of the above can and cannot do. **Note**: IAM has predefined managed policies.
 
 
-For big enterprises:
+#### For big enterprises:
 - IAM Federation: Integrate their own repository of users with IAM using SAML standard
 
-Best practices:
+#### Best practices:
 - One IAM User per person **ONLY**
 - One IAM Role per Application
 - IAM credentials should **NEVER** be shared

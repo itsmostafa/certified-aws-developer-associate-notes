@@ -8,7 +8,7 @@
     - [IAM: Identity Access & Management](aws-fundamentals/iam.md)
     - [EC2: Virtual Machines](aws-fundamentals/ec2.md)
     - [ELB: Elastic Load Balancers](aws-fundamentals/elb.md)
-    - ASG: Auto Scaling Group
+    - [ASG: Auto Scaling Group](aws-fundamentals/asg.md)
     - EBS Volumes
     - RDS: Relational Database Service
     - Route 53
@@ -18,6 +18,22 @@
 
 - AWS Deep Dive
     - CLI: Command Line Interface
+    - SDK: Software Development Kit
+    - IAM Roles & Policies
+    - Elastic Beanstalk
+    - CICD: CodeCommit, CodePipeline, CodeBuild, CodeDeploy
+    - CloudFormation
+    - CloudWatch
+    - SQS
+    - SNS
+    - Kinesis
+    - Serverless: Lambda
+    - Serverless: DynamoDB
+    - API Gateway
+    - Cognito
+    - ECS: Elastic Container Service
+    - ECR: Elastic Container Registry
+    - Fargate
 
 - [Exam Preperation](#exam-preparation)
 
