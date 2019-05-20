@@ -35,7 +35,7 @@
     - ECR: Elastic Container Registry
     - Fargate
 
-- [Exam Preperation](#exam-preparation)
+- [Exam Preparation](#exam-preparation)
 
 
 ## Exam Preparation
@@ -50,7 +50,7 @@
         - Security: each service deep-dive + dedicated section
         - Development with AWS Services: Serverless, API, SDK, & CLI
         - Refactoring: Understand all the AWS services for the best migration
-        - Monitoring and Troubleshooting: CloudWAtch, CloudTrail, X-Ray
+        - Monitoring and Troubleshooting: CloudWatch, CloudTrail, X-Ray
 
     - Exam Guide:
         - https://aws.amazon.com//certification/certified-developer-certificate/
