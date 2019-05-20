@@ -9,7 +9,7 @@
     - [EC2: Virtual Machines](aws-fundamentals/ec2.md)
     - [ELB: Elastic Load Balancers](aws-fundamentals/elb.md)
     - [ASG: Auto Scaling Group](aws-fundamentals/asg.md)
-    - EBS Volumes
+    - [EBS Volumes](aws-fundamentals/ebs.md)
     - RDS: Relational Database Service
     - Route 53
     - ElastiCache
