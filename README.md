@@ -14,7 +14,7 @@
     - [Route 53](aws-fundamentals/route53.md)
     - [ElastiCache](aws-fundamentals/elasticache.md)
     - [VPC: Virtual Private Cloud](aws-fundamentals/vpc.md)
-    - S3 Buckets
+    - [S3 Buckets](aws-fundamentals/s3.md)
 
 - AWS Deep Dive
     - CLI: Command Line Interface
