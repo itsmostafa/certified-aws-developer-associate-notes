@@ -13,7 +13,7 @@
     - [RDS: Relational Database Service](aws-fundamentals/rds.md)
     - [Route 53](aws-fundamentals/route53.md)
     - [ElastiCache](aws-fundamentals/elasticache.md)
-    - VPC: Virtual Private Cloud
+    - [VPC: Virtual Private Cloud](aws-fundamentals/vpc.md)
     - S3 Buckets
 
 - AWS Deep Dive
