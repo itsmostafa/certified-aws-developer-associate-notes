@@ -12,7 +12,7 @@
     - [EBS Volumes](aws-fundamentals/ebs.md)
     - [RDS: Relational Database Service](aws-fundamentals/rds.md)
     - [Route 53](aws-fundamentals/route53.md)
-    - ElastiCache
+    - [ElastiCache](aws-fundamentals/elasticache.md)
     - VPC: Virtual Private Cloud
     - S3 Buckets
 
