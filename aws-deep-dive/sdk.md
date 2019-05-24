@@ -15,7 +15,7 @@ Official SDKs:
 - AWS SDK are required when coding against AWS Services such as DynamoDB
 - Fact: AWS CLI uses the Python SDK (boto3)
 - The exam expects you to know when you should use an SDK
-- Iif you don’t specify or configure a default region, then us-east-1 will be chosen by default
+- If you don’t specify or configure a default region, then us-east-1 will be chosen by default
 
 #### SDK Credentials Security
 
