@@ -1,9 +1,15 @@
 # CLI: Command Line Interface
 
 Add user credentials locally using this command:
-$ aws configure
+- $ `aws configure`
 
-AWS CLI on EC2
+If you are using multiple AWS accounts, you can add custom profiles with seperate credentials using this command:
+- $ `aws configure --profile {my-other-aws-account}`
+- if you you'd like to execute commands on a specific profile:
+  - example: `aws s3 ls --profile {my-other-aws-account}`
+- if you don't specify the aws profile, the commands will be executed to your **default** profile
+
+#### AWS CLI on EC2
 * IAM roles can be attached to EC2 instances
 * IAM roles can come with a policy authorizing exactly what the EC2 instance should be able to do. This is the best practice.
 * EC2 Instances can then use these profiles automatically without any additional configurations
