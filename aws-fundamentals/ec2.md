@@ -1,6 +1,7 @@
 # EC2: Virtual Machines
 
 - [EC2 User Data](#ec2-user-data)
+- [EC2 Meta Data](#ec2-meta-data)
 - [EC2 Instance Launch Types](#ec2-instance-launch-types)
 - [EC2 Pricing](#ec2-pricing)
 - [AMIs](#AMIs)
@@ -25,6 +26,13 @@ If your machine is stopped and then restarted, the public IP will change
     * Installing software
     * Downloading common files from the internet
 * The EC2 User Data Script runs with the root user
+  
+## EC2 Meta Data
+* Information about your EC2 instance
+* It allows EC2 isntances to "learn" about themselves without having to use an IAM role for that purpose
+* Powerful but one of the least known features to developers
+* You can retrieve IAM roles from the metadata but **not** IAM policies
+* URL: {ec2-ip-address}/latest/meta-data
 
 ## EC2 Instance Launch Types 
 - **On Demand Instances**: short workload, predictable pricing
