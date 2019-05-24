@@ -18,7 +18,7 @@
     - [S3 Buckets](aws-fundamentals/s3.md)
 
 - AWS Deep Dive
-    - CLI: Command Line Interface
+    - [CLI: Command Line Interface](aws-deep-dive/cli.md)
     - SDK: Software Development Kit
     - IAM Roles & Policies
     - Elastic Beanstalk
