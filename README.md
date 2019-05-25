@@ -34,7 +34,7 @@
   - API Gateway
   - Cognito
 
-- Docker
+- Docker based AWS services
   - ECS: Elastic Container Service
   - Elastic Container Registry
   - Fargate

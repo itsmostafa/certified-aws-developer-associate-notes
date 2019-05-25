@@ -64,9 +64,50 @@ EBS Snapshots
     * Backups must be operated by the user
 * Overall, EBS-backed instances should fit most applications workloads
 
+#### EB Deployment Modes
+- Single Instance mode: Great for development environment
+- High Availability with Load Balancer mode: Great for production environments
+
+What if you want to update each deployment
+- **All at once (deploy on the go)**
+  - Fastest, but instances aren't available to serve traffic for awhile (longer downtime)
+  - No additional cost
+- **Rolling update**
+  - update a few (bucket) instances at a time, and then move onto the next bucket when the current ones become healthy
+  - You can set the bucket size
+  - Application will run below capacity during update
+  - At some point, the application will run both versions simultaneously
+  - Can be a very long deployment time depending on number of instances running
+  - No additional cost
+- **Rolling update with additonal batches**
+  - Similar to rolling updates but you spin up new instances to move the batch (so the old application is still available)
+  - Application is running at capacity
+  - You can set the bucket size
+  - Additional batches are removed at the end of the deployment
+  - Small additional cost (due to additional running instances)
+  - Great for production environments
+- **Immutable**
+  - Spins up new instances in a new ASG, deploys versions to these instances and then swaps all the instances when everything is healthy
+  - Zero downtime
+  - New code is deployed on new instances in a temporary ASG
+  - High cost, double capacity
+  - Longest deployment
+  - Quick rollback in case of failures (new ASG will be terminated)
+  - Best for production environements
+
+#### Blue / Green Deployment
+- This is not a direct feature of Elastic Beanstalk
+- Zero downtime and release facility
+- Create a new staging environment and deploy your newest version there
+- The new environment (green) can be validated independently and roll back if there's issues
+- Route 53 can be setup using weighted policies to redirect a little bit of traffic to the staging environment
+- Using the elastic beanstalk console, you can "swap URLs" when with the testing environment
+- This is a manual feature, it's not directly embedded in EB
+
 #### EBS Summary
 * EBS can be attached to only one instance at a time
 * EBS are locked at the AZ level
 * Migrating an EBS volume across AZ means first backing it up (snapshot), then recreating it in the other AZ
 * EBS backups use IO and you shouldn’t run them while your application is handling a lot of traffic
 * Root EBS Volumes of instances get terminated by default if the EC2 instance gets terminated. (You can disable that)
+* In some cases, it's better to externalize your RDS database so that it won't get deleted when you delete your elastic beanstalk enviornment
