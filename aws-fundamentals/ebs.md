@@ -104,6 +104,41 @@ What if you want to update each deployment
 - Using the elastic beanstalk console, you can "swap URLs" when with the testing environment
 - This is a manual feature, it's not directly embedded in EB
 
+#### Elastic Beanstalk Extensions
+- A zip file containing our code must be deployed to Elastic Beanstalk
+- All the parameters set in the UI can be configured with code using files
+- Requirements:
+  - in the .ebextensions/ directory in the root of source code
+  - YAML / JSON format
+  - .config extensions (example: logging.config)
+  - Able to modify some default settings using: option_settings
+  - Ability to add resources such as RDS, ElastiCache, DynamoDB, etc...
+- Resources managed by .ebextensions get deleted if the environment goes away
+- The .ebextensions folder goes to the root of your project
+
+#### Elastic Beanstalk CLI
+- We can install an additional CLI called the “EB cli” which makes working with Beanstalk from the CLI easier
+- Basic commands are:
+  - eb create
+  - eb status
+  - eb health
+  - eb events
+  - eb logs
+  - eb open
+  - eb deploy
+  - eb config
+  - eb terminate
+- It’s helpful for your automated deployment pipelines!
+
+#### Deployment Mechanism
+- Describe dependancies
+  - (requirements.txt for python, package.json for node.js)
+- Package code as zip
+- Zip file is uploaded to each EC2 machine
+- Each EC2 machine resolves dependencies (SLOW)
+- Optimization in case of long deployments:
+  - Package dependencies with source code to improve deployment performance and speed
+
 #### EBS Summary
 * EBS can be attached to only one instance at a time
 * EBS are locked at the AZ level
@@ -111,3 +146,4 @@ What if you want to update each deployment
 * EBS backups use IO and you shouldn’t run them while your application is handling a lot of traffic
 * Root EBS Volumes of instances get terminated by default if the EC2 instance gets terminated. (You can disable that)
 * In some cases, it's better to externalize your RDS database so that it won't get deleted when you delete your elastic beanstalk enviornment
+* Elastic Beanstalk relies on CloudFormation
