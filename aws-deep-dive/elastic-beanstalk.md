@@ -1,0 +1,36 @@
+# Elastic Beanstalk
+
+#### *Elastic Beanstalk* is a developer centric view of deploying application on AWS.
+- A managed service
+  - Instance configuration
+  - OS is handled by Beanstalk
+  - Deployment strategy is configurableut performed by Beanstalk
+  - Application code configurable
+- It will leverage all the AWS components that we have gone over thus far:
+  - EC2
+  - ASG
+  - ELB
+  - RDS
+  - Etc..
+- Elastic Beanstalk is free but you pay for the underlying instances
+- Three architecture models:
+  - Single instance deployment: good for developers
+  - LB + ASG: great for production or staging web applications
+  - ASG only: great for non-web apps in production
+- Elastic Beanstalk has three components:
+  - Application
+  - Application Version (Each deployment gets assigned a version)
+  - Environment name (dev, staging, prod): free naming
+- You deploy application versions to environments and can promote application versions to the next environment
+- Rollback feature to previous application versions
+- Full control over the lifecycle of environments
+- Support for many platforms:
+  - Go
+  - Java
+  - Python
+  - Node.js
+  - Ruby
+  - Single Container Docker
+  - Multi Container Docker
+  - Preconfigure Docker
+  - Write your own custom platforms (if not supported)
