@@ -33,4 +33,4 @@
   - Single Container Docker
   - Multi Container Docker
   - Preconfigure Docker
-  - Write your own custom platforms (if not supported)
+  - Write your own custom platforms (If the any of the above is not supported)
