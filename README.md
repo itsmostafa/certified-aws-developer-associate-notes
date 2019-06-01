@@ -21,7 +21,7 @@
     - [CLI: Command Line Interface](aws-deep-dive/cli.md)
     - [SDK: Software Development Kit](aws-deep-dive/sdk.md)
     - [Elastic Beanstalk](aws-deep-dive/elastic-beanstalk.md)
-    - CICD: CodeCommit, CodePipeline, CodeBuild, CodeDeploy
+    - [CICD: CodeCommit, CodePipeline, CodeBuild, CodeDeploy](aws-deep-dive/cicd.md)
     - CloudFormation
     - CloudWatch
     - SQS
