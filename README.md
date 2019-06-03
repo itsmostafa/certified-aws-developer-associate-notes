@@ -23,7 +23,7 @@
     - [Elastic Beanstalk](aws-deep-dive/elastic-beanstalk.md)
     - [CICD: Continuous Integration and Deployment](aws-deep-dive/cicd.md)
         - [CodeCommit](aws-deep-dive/codecommit.md)
-        - CodePipeline
+        - [CodePipeline](aws-deep-dive/codepipeline.md)
         - CodeBuild
         - CodeDeploy
     - CloudFormation
