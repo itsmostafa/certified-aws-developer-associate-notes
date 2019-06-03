@@ -13,7 +13,7 @@
 
 #### Codepipline Artifacts
 - Each pipeline stage can create ”artifacts”
-- **Artifacts** are passed stored in Amazon S3 and passed on to the next stage
+- **Artifacts** are Amazon S3 buckets that CodePipeline uses to store artifacts used by pipelines. When you first use the CodePipeline console in a region to create a pipeline, CodePipeline automatically generates this S3 bucket in the AWS region.
 
 #### Troublshooting
 - CodePipeline state changes happen in **AWS CloudWatch Events**, which can in return create SNS notifications.
