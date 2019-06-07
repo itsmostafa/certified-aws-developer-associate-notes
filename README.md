@@ -25,7 +25,7 @@
         - [CodeCommit](aws-deep-dive/codecommit.md)
         - [CodePipeline](aws-deep-dive/codepipeline.md)
         - [CodeBuild](aws-deep-dive/codebuild.md)
-        - CodeDeploy
+        - [CodeDeploy](aws-deep-dive/codedeploy.md)
     - CloudFormation
     - CloudWatch
     - SQS
