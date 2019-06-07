@@ -26,7 +26,7 @@
         - [CodePipeline](aws-deep-dive/codepipeline.md)
         - [CodeBuild](aws-deep-dive/codebuild.md)
         - [CodeDeploy](aws-deep-dive/codedeploy.md)
-    - CloudFormation
+    - [CloudFormation](aws-deep-dive/cloudformation/cloudformation.md)
     - CloudWatch
     - SQS
     - SNS
