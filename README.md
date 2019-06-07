@@ -24,7 +24,7 @@
     - [CICD: Continuous Integration and Deployment](aws-deep-dive/cicd.md)
         - [CodeCommit](aws-deep-dive/codecommit.md)
         - [CodePipeline](aws-deep-dive/codepipeline.md)
-        - CodeBuild
+        - [CodeBuild](aws-deep-dive/codebuild.md)
         - CodeDeploy
     - CloudFormation
     - CloudWatch
