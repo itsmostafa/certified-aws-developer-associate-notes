@@ -32,6 +32,8 @@
     - SNS
     - Kinesis
 
+- [YAML](aws-deep-dive/yaml.md)
+
 - AWS Serverless
   - Lambda
   - DynamoDB
