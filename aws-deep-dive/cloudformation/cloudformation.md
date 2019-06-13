@@ -142,7 +142,7 @@ CloudFormation.
 
 ##### Outputs examples
 - Creating a SSH Security Group as part of one template
-- Create an output that references that security groupk
+- Create an output that references that security group
 
 ##### Cross Stack Reference
 - We then create a second template that leverages that security group
