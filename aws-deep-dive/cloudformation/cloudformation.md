@@ -170,8 +170,8 @@ CloudFormation.
 #### CloudFormation Intrinsic Functions
 - Refs
     - The `Fn::Ref` function can be leveraged to reference
-    - Parameters => returns the value of the parameter
-    - Resources => returns the physical ID of the underlying resource (ex: EC2 ID)
+        - Parameters => returns the value of the parameter
+        - Resources => returns the physical ID of the underlying resource (ex: EC2 ID)
     - The shorthand for this in YAML is `!Ref`
 - `Fn::GetAtt`
     - Attributes are attached to any resources you create

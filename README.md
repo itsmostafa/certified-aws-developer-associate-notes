@@ -27,7 +27,7 @@
         - [CodeBuild](aws-deep-dive/codebuild.md)
         - [CodeDeploy](aws-deep-dive/codedeploy.md)
     - [CloudFormation](aws-deep-dive/cloudformation/cloudformation.md)
-    - CloudWatch
+    - [CloudWatch](aws-deep-dive/monitoring-and-audit/cloudwatch.md)
     - SQS
     - SNS
     - Kinesis
