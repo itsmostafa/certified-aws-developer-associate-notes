@@ -87,7 +87,7 @@ from inside the instance as a custom metric)
     - Stream to ElasticSearch cluster for further analytics
 - CloudWatch Logs can use filter expressions
 - Logs storage architecture:
-    - Log groups: arbitrary name, usually representing an application
+    - Log groups: arbitrary name, usually representing an application. Log expiration policy should be defineda at this level.
     - Log stream: instances within application / log files / containers
 - Can define log expiration policies (never expire, 30 days, etc..)
 - Using the AWS CLI we can tail CloudWatch logs
