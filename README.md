@@ -21,16 +21,17 @@
     - [CLI: Command Line Interface](aws-deep-dive/cli.md)
     - [SDK: Software Development Kit](aws-deep-dive/sdk.md)
     - [Elastic Beanstalk](aws-deep-dive/elastic-beanstalk.md)
-    - [CICD: Continuous Integration and Deployment](aws-deep-dive/cicd.md)
+    - [CICD: Continuous Integration and Deployment](aws-deep-dive/cicd/cicd.md)
         - [CodeCommit](aws-deep-dive/codecommit.md)
         - [CodePipeline](aws-deep-dive/codepipeline.md)
         - [CodeBuild](aws-deep-dive/codebuild.md)
         - [CodeDeploy](aws-deep-dive/codedeploy.md)
     - [CloudFormation](aws-deep-dive/cloudformation/cloudformation.md)
     - [CloudWatch](aws-deep-dive/monitoring-and-audit/cloudwatch.md)
-    - SQS
-    - SNS
-    - Kinesis
+    - [Integration and Messaging](aws-deep-dive/integration-and-messaging/integration-and-messaging.md)
+        - SQS
+        - SNS
+        - Kinesis
 
 - [YAML](aws-deep-dive/yaml.md)
 
