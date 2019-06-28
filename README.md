@@ -35,7 +35,7 @@
 
 - [YAML](aws-deep-dive/yaml.md)
 
-- AWS Serverless
+- [AWS Serverless](aws-serverless/serverless.md)
   - Lambda
   - DynamoDB
   - API Gateway
