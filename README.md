@@ -5,37 +5,37 @@
 ## Table of contents
 
 - AWS Fundamentals
-    - [IAM: Identity Access & Management](aws-fundamentals/iam.md)
-    - [EC2: Virtual Machines](aws-fundamentals/ec2.md)
-    - [Security Groups](aws-fundamentals/security-groups.md)
-    - [ELB: Elastic Load Balancers](aws-fundamentals/elb.md)
-    - [ASG: Auto Scaling Group](aws-fundamentals/asg.md)
-    - [EBS Volumes](aws-fundamentals/ebs.md)
-    - [RDS: Relational Database Service](aws-fundamentals/rds.md)
-    - [Route 53](aws-fundamentals/route53.md)
-    - [ElastiCache](aws-fundamentals/elasticache.md)
-    - [VPC: Virtual Private Cloud](aws-fundamentals/vpc.md)
-    - [S3 Buckets](aws-fundamentals/s3.md)
+    - [IAM: Identity Access & Management](1-aws-fundamentals/iam.md)
+    - [EC2: Virtual Machines](1-aws-fundamentals/ec2.md)
+    - [Security Groups](1-aws-fundamentals/security-groups.md)
+    - [ELB: Elastic Load Balancers](1-aws-fundamentals/elb.md)
+    - [ASG: Auto Scaling Group](1-aws-fundamentals/asg.md)
+    - [EBS Volumes](1-aws-fundamentals/ebs.md)
+    - [RDS: Relational Database Service](1-aws-fundamentals/rds.md)
+    - [Route 53](1-aws-fundamentals/route53.md)
+    - [ElastiCache](1-aws-fundamentals/elasticache.md)
+    - [VPC: Virtual Private Cloud](1-aws-fundamentals/vpc.md)
+    - [S3 Buckets](1-aws-fundamentals/s3.md)
 
 - AWS Deep Dive
-    - [CLI: Command Line Interface](aws-deep-dive/cli.md)
-    - [SDK: Software Development Kit](aws-deep-dive/sdk.md)
-    - [Elastic Beanstalk](aws-deep-dive/elastic-beanstalk.md)
-    - [CICD: Continuous Integration and Deployment](aws-deep-dive/cicd/cicd.md)
-        - [CodeCommit](aws-deep-dive/cicd/codecommit.md)
-        - [CodePipeline](aws-deep-dive/cicd/codepipeline.md)
-        - [CodeBuild](aws-deep-dive/cicd/codebuild.md)
-        - [CodeDeploy](aws-deep-dive/cicd/codedeploy.md)
-    - [CloudFormation](aws-deep-dive/cloudformation/cloudformation.md)
-    - [CloudWatch](aws-deep-dive/monitoring-and-audit/cloudwatch.md)
-    - [Integration and Messaging](aws-deep-dive/integration-and-messaging/integration-and-messaging.md)
+    - [CLI: Command Line Interface](2-aws-deep-dive/cli.md)
+    - [SDK: Software Development Kit](2-aws-deep-dive/sdk.md)
+    - [Elastic Beanstalk](2-aws-deep-dive/elastic-beanstalk.md)
+    - [CICD: Continuous Integration and Deployment](2-aws-deep-dive/cicd/cicd.md)
+        - [CodeCommit](2-aws-deep-dive/cicd/codecommit.md)
+        - [CodePipeline](2-aws-deep-dive/cicd/codepipeline.md)
+        - [CodeBuild](2-aws-deep-dive/cicd/codebuild.md)
+        - [CodeDeploy](2-aws-deep-dive/cicd/codedeploy.md)
+    - [CloudFormation](2-aws-deep-dive/cloudformation/cloudformation.md)
+    - [CloudWatch](2-aws-deep-dive/monitoring-and-audit/cloudwatch.md)
+    - [Integration and Messaging](2-aws-deep-dive/integration-and-messaging/integration-and-messaging.md)
         - SQS
         - SNS
         - Kinesis
 
-- [YAML](aws-deep-dive/yaml.md)
+- [YAML](2-aws-deep-dive/yaml.md)
 
-- [AWS Serverless](aws-serverless/serverless.md)
+- [AWS Serverless](3-aws-serverless/serverless.md)
   - Lambda
   - DynamoDB
   - API Gateway
