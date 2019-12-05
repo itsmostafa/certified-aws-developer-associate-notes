@@ -47,7 +47,7 @@ If your machine is stopped and then restarted, the public IP will change
 * Pay for what you use
 * Has the highest cost but no upfront payment
 * No long term commitment
-* Recommended for short-term and un-interrupted workloads, where you can’t predict how the application will behave
+* Recommended for short-term and uninterrupted workloads, where you can’t predict how the application will behave
 #### Reserved Instances
 * Up to 75% compared to On-demand
 * Pay upfront for what you use with long term commitment
