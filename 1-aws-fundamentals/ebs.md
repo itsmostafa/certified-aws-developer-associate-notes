@@ -147,3 +147,10 @@ What if you want to update each deployment
 * Root EBS Volumes of instances get terminated by default if the EC2 instance gets terminated. (You can disable that)
 * In some cases, it's better to externalize your RDS database so that it won't get deleted when you delete your elastic beanstalk enviornment
 * Elastic Beanstalk relies on CloudFormation
+
+#### EBS Volume Types - Use cases 
+
+* Big Data / Data Warehouses / Log Processing : ST1 (HDD)
+* Lowest storage cost : SC1 (HDD)
+* NoSQL such as MongoDB, Cassandra or MSQL : IO1 (SSD)
+* Low latency applications : GP2 (SSD) 
