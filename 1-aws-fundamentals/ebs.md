@@ -25,6 +25,36 @@
 - SC1 (HDD): Lowest cost HDD volume designed for less frequently accessed workloads 
 - EBS Volumes are characterized in Size | Throughput | IOPS
 - When in doubt always consult the AWS documentation
+-  Only GP2 and IO1 can be used as boot volumes
+
+#### EBS Volume Types Use Cases
+1. GP2
+- Recommended for most workloads 
+- System boot volumes
+- Virtual desktops
+- Low-latency interactive apps
+- Development and test environments
+
+2. IO1
+- Critical business applications that require sustained IOPS performance, or more than 16,000 IOPS per volume (gp2 limit)
+-  Large database workloads, such as: MongoDB, Cassandra, Microsoft SQL Server, MySQL, PostgreSQL, Oracle
+
+3. ST1
+- Streaming workloads requiring consistent, fast throughput at a low price. 
+- Big data, Data warehouses, Log processing
+- Apache Kafka
+ - Cannot be a boot volume
+ 
+4. SC1
+- Throughput-oriented storage for large volumes of data that is infrequently accessed
+- Scenarios where the lowest storage cost is important
+- Cannot be a boot volume
+
+#### EBS Volume Types Summary
+- gp2: General Purpose Volumes (cheap)
+- io1: Provisioned IOPS (expensive)
+- st1: Throughput Optimized HDD
+- sc1: Cold HDD, Infrequently accessed data
 
 #### EBS Volume Resizing
 * Feb 2017: You can resize your EBS Volumes
