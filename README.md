@@ -30,7 +30,7 @@
     - [CloudWatch](2-aws-deep-dive/monitoring-and-audit/cloudwatch.md)
     - [Integration and Messaging](2-aws-deep-dive/integration-and-messaging/0-intro.md)
         - [SQS](2-aws-deep-dive/integration-and-messaging/1-sqs.md)
-        - SNS
+        - [SNS](2-aws-deep-dive/integration-and-messaging/2-sns.md)
         - Kinesis
 
 - [YAML](2-aws-deep-dive/yaml.md)
