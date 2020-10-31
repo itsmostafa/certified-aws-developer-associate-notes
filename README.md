@@ -10,7 +10,7 @@
     - [Security Groups](1-aws-fundamentals/security-groups.md)
     - [ELB: Elastic Load Balancers](1-aws-fundamentals/elb.md)
     - [ASG: Auto Scaling Group](1-aws-fundamentals/asg.md)
-    - [EBS Volumes](1-aws-fundamentals/ebs.md)
+    - [EBS: Elastic Block Store](1-aws-fundamentals/ebs.md)
     - [RDS: Relational Database Service](1-aws-fundamentals/rds.md)
     - [Route 53](1-aws-fundamentals/route53.md)
     - [ElastiCache](1-aws-fundamentals/elasticache.md)
@@ -72,7 +72,7 @@
   * Know the fundamental differences between private vs public vs elastic IP 
   * Know how to use User Data to customize your instance at boot time 
   * Know that you can build custom AMI to enhance your OS 
-  * EC2 instances are billed by the second and can be easily created and thrown away, welcome to the cloud!  
+  * EC2 instances are billed by the second and can be easily created and thrown away, welcome to the cloud! 
   Maybe on Exam:
   * Availability zones are in geographically isolated data centers
   * IAM users are NOT defined on a per-region basis
