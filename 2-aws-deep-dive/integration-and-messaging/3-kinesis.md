@@ -1,6 +1,6 @@
 # Kinesis
 
-Kinesis is a managed service service which makes it easy to collect and analyze data and video streams in real time. It is considered an managed alternative for Apache Kafka.
+Kinesis is a managed service service which makes it easy to collect and analyze data and video streams in real time. It is considered a managed alternative for Apache Kafka.
 
 * Kinesis Streams: low latency streaming ingest at scale
 * Kinesis Analytics: real-time analytics on streams using SQL
@@ -16,7 +16,7 @@ Kinesis is a managed service service which makes it easy to collect and analyze 
 
 ## Shards
 
-* One stream can contain one ore more shards
+* A stream can contain one or more shards
 * Write capacity: 1MB/s or 1000 messages per shard
 * Read capacity: 2MB/s per shard
 * Billing is per shard
@@ -24,13 +24,14 @@ Kinesis is a managed service service which makes it easy to collect and analyze 
 
 ## Kines API
 
-* PutRecord API: requires a partition key that gets hashed.
-* Partition key should ne highly distributed (otherwise a shard can become overwhelmed)
+* PutRecord API: requires a partition key which gets hashed.
+* Partition key should be highly distributed (otherwise a shard can become overwhelmed)
 * PutRecord accepts batches, cost can be reduced
-* Throws ProvisionedThroughputExceeded in case of capacity is exceeded. Solution: exponential back-off, more shards, ensure that partition key is highly distributed
+* PutRecord throws ProvisionedThroughputExceeded in case of capacity is exceeded. Solution: exponential back-off, more shards, ensure that partition key is highly distributed
 
 ## Kinesis Client Library (KCL)
 
+* It is a Java library
 * Each shard should be read by only one KCL instance!
 * Progress checkpoint is written to DynamoDB
 * Records are read in order at the shard level
