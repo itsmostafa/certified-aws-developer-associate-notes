@@ -31,7 +31,7 @@
     - [Integration and Messaging](2-aws-deep-dive/integration-and-messaging/0-intro.md)
         - [SQS](2-aws-deep-dive/integration-and-messaging/1-sqs.md)
         - [SNS](2-aws-deep-dive/integration-and-messaging/2-sns.md)
-        - Kinesis
+        - [Kinesis](2-aws-deep-dive/integration-and-messaging/3-kinesis.md)
 
 - [YAML](2-aws-deep-dive/yaml.md)
 
