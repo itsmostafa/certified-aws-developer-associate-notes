@@ -38,7 +38,7 @@
 - [AWS Serverless](3-aws-serverless/serverless.md)
   - [Lambda](3-aws-serverless/lambda.md)
   - DynamoDB
-  - API Gateway
+  - [API Gateway](3-aws-serverless/apigateway.md)
   - Cognito
 
 - Docker based AWS services
