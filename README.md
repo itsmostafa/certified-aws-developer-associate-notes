@@ -40,7 +40,7 @@
   - DynamoDB
   - [API Gateway](3-aws-serverless/apigateway.md)
   - [SAM](3-aws-serverless/sam.md)
-  - Cognito
+  - [Cognito](3-aws-serverless/cognito.md)
 
 - Docker based AWS services
   - ECS: Elastic Container Service
