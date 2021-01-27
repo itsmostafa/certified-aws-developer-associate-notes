@@ -1,9 +1,9 @@
 # Cognito
 
-- Used to give access for user/clients to be able to interact with out applications.
+- Used to give access for user/clients to be able to interact without applications.
 - **Cognito User Pools**:
     - Sign in functionality
-    - Integrates with API Gatewaya and Application Load Balancer
+    - Integrates with API Gateway and Application Load Balancer
 - **Cognito Identity Pools (Federated Identity)**:
     - Provide AWS credentials to users to access AWS resources directly
     - Integrate with Cognito User Pools as an identity provider:
@@ -21,13 +21,14 @@
     - Email/Phone verification
     - Multi-factor auth (MFA)
     - Federated Identities: users can log in with Facebook, Google, SAML
-- User can be blocked if their credential is compromised elsewhere (in case fo Federated Identitites)
-- Login uses JSON Web Toke (JWT)
+- User can be blocked if their credential is compromised elsewhere (in case of Federated Identities)
+- Login uses JSON Web Token (JWT)
 - CUP integrates with API Gateway and ALB
 
 ### Cognito User Pools - Lambda Triggers
-- CUP can ivoke Lambda functions synchronously on these triggers:
-    - Authenticaion events:
+
+- CUP can invoke Lambda functions synchronously on these triggers:
+    - Authentication  events:
         - pre auth
         - post auth
         - pre token generation
@@ -40,7 +41,7 @@
     - Toke creation
         - pre token generation
 
-### Congito User Pools - Hosted Authentication UI
+### Cognito User Pools - Hosted Authentication UI
 
 - Cognito has a hosted auth UI which can be added to an application to handle sing-up and sign-in workflows
 - Using the hosted UI, we can have a foundation for integration with social logins, OIDC or SAML
@@ -52,10 +53,10 @@
 - The identity pool can include:
     - Public providers (Login with Amazon, Facebook, Google, Apple)
     - Users is an Amazon Cognito pool
-    - OpenID Connect Providers and SAML Indentity providers
+    - OpenID Connect Providers and SAML Identity providers
     - Developer authenticated identities (custom login server)
     - Cognito Identity Pools allow for unauthenticated (guest) access
-- Users can then access AWS servcices directly or through API Gateway
+- Users can then access AWS services directly or through API Gateway
     - The IAM policies applied to the credentials are defined in Cognito
     - They can be customized based on the user_id for fine grained control
 
@@ -65,7 +66,7 @@
 - We can define rules to choose the role for each user based on the userID
 - We can partition user access using policy variables
 - IAM credentials are obtained by Cognito Identity Pools through STS
-- Roles must have a "trust" policy of Cognito Identiy Pools
+- Roles must have a "trust" policy of Cognito Identity Pools
 
 ## Cognito User Pools vs Identity Pools
 
@@ -82,8 +83,8 @@
 - Deprecated - use AppSync
 - Store preferences, configuration, state of app
 - Cross device services (any platform - IOS, Android, etc.)
-- Offline capability (snychronize when back online)
+- Offline capability (synchronize when back online)
 - Store data in datasets (up to 1MB), up to 20 datasets
-- Push Sync: silently notify accross all devices when identity data changes
+- Push Sync: silently notify across all devices when identity data changes
 - Cognito Stream: stream data from Cognito into Kinesis
 - Cognito Events: execute Lambda function in response to events

@@ -7,7 +7,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - Integration with AWS Lambda: no infrastructure to manage
 - Support for WebSockets protocol
 - Handles API versioning
-- Handles multiple environtments (dev, test, prod)
+- Handles multiple environments (dev, test, prod)
 - Handles security (authentication and authorization)
 - Can create API keys => request throttling
 - Swagger/OpenAPI import to quickly define APIs
@@ -27,22 +27,22 @@ Allows us to create REST APIs which can be public and accessible to the clients.
     - Requests will be routed through the CloudFront Edge locations
     - API Gateway will still live in one region where it was created
 - Regional: for clients within the same region. Can be combined with CloudFront for control over caching strategies and distribution
-- Private: can only be access withon the VPC using VPC endpoint (ENI)
+- Private: can only be access within the VPC using VPC endpoint (ENI)
 
 ## Deployment Stages
 
 - Changes made in API Gateway are not in effect as long as they are not part of a deployment
 - Changes are deployed to stages
 - Recommended naming for stages: dev, test, prod, v1, v2, etc..
-- Each stage can get its own configuraiton parameters, they can be rolled back
-- Common use case for stages: migrate from prevous version to the next version (example from v1 to v2)
+- Each stage can get its own configuration parameters, they can be rolled back
+- Common use case for stages: migrate from previous version to the next version (example from v1 to v2)
 - Stage variables:
     - Env. variables for API Gateway stages
     - Use case: configure HTTP end-point to which the stage talks to; pass configuration parameters to Lambda functions
     - Stage variables are passed as to the "context" object in AWS Lambda
-- Common patter to the API Gateway and stage variables:
+- Common pattern to the API Gateway and stage variables:
     - We create stage variables to indicate the corresponding Lambda alias
-    - In stage resource configuraion we can reference the Lambda function and the stage variables as follows: `lambda-function-name:${stageVariable.lambdaAlias}` 
+    - In stage resource configuration we can reference the Lambda function and the stage variables as follows: `lambda-function-name:${stageVariable.lambdaAlias}` 
 
 ### Canary Deployments
 
@@ -50,7 +50,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - We can choose the % of the traffic the canary channel receives
 - This will allow to test the API Gateway new version
 - Metrics and logs are separated for original stage and canary stage
-- Possibilty to override any variable for canary
+- Possibility  to override any variable for canary
 - Equivalent of Blue/Green deployments
 
 ## API Gateway Integration Types
@@ -72,7 +72,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - Filter output results
 - Concrete example: integrate JSON to XML with SOAP
     - SOAP is XML based, REST is JSON based
-    - Client interracts with API Gateway using JSON, API Gateway interracts with the SOAP endpoint using XML
+    - Client interacts with API Gateway using JSON, API Gateway interacts with the SOAP endpoint using XML
     - API Gateway extracts the data from JSON, builds the SOAP request, calls the SOAP API, transforms the SOAP response to JSON
 
 ## AWS API Gateway Swagger/OpenAPI Spec
@@ -82,7 +82,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
     - Method
     - Method Request
     - Integration Request
-    - Methid Response
+    - Method Response
     - AWS extensions for API Gateway every single setup
 - APIs can be exported as Swagger/OpenAPI spec
 - Swagger can be written in YAML/JSON
@@ -96,7 +96,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - Possible to override cache setting sper method
 - Cache can be encrypted
 - Cache capacity can be between 0.5GB up to 237GB
-- Cahce is expensive, use it only in production
+- Cache is expensive, use it only in production
 - Cache can be invalidated by:
     - Flush the entire cache immediately
     - Clients can invalidate cache with the header `Cache-Control: max-age=0` (needs IAM auth)
@@ -111,7 +111,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
     - API key can be used to identify clients and meter their access
 - API keys:
     - alphanumeric strings
-    - clients can securily use the API and we can authenticate requests
+    - clients can securely use the API and we can authenticate requests
     - we can control access
     - quota limits is the overall number of requests
 - Order:
@@ -129,18 +129,18 @@ Allows us to create REST APIs which can be public and accessible to the clients.
     - Log contains information about the request/response body
 - X-Ray:
     - Enable tracing to get extra information
-    - X-Ray + API Gatetay + AWS Lambda gives full picture about the workings of an serverless application
+    - X-Ray + API Gateway + AWS Lambda gives full picture about the workings of an serverless application
 - CloudWatch Metrics:
     - Metrics are per stage with the possibility to enable detailed metrics
     - Useful metrics: 
         - **CacheHitCount** and **CacheMissCount** give information about the efficiency of the cache
         - **Count** - the total number of API requests
         - **IntegrationLatency** - the time between the request are relayed the the back-end and response is received by the API Gateway
-        - **Latency** - total time between request and response. Max ammount of time a request can perform is **29 seconds**
+        - **Latency** - total time between request and response. Max amount of time a request can perform is **29 seconds**
         - **4XXError** - client side errors
         - **5XXError** - server side errors
 - Throttling
-    - Account limit by default is 10K request per second accross all APIs
+    - Account limit by default is 10K request per second across all APIs
     - Soft limit, can be increased upon request
     - In case of throttling => 429 Too Many Requests
     - Can set stage limit & method limit to not use every request in case of a single API
@@ -150,7 +150,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
         - 400: Bad Request
         - 403: Access Denied, WAF filtered
         - 428: Quota exceeded, Too Many Requests
-    -5xx server errrors:
+    -5xx server errors:
         - 502: Bad Gateway - incompatible output from the back-end or out-of-order invocation due to heavy loads
         - 503: Service Unavailable
         - 504: Integration Failure - Back-end request timeout exceeded
@@ -158,7 +158,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 ## CORS
 
 - Must be enabled to support requests from other domains
-- The OPTIONS pre-flight request must contain the following headers:
+- The OPTIONS preflight request must contain the following headers:
     - Access-Control-Allow-Methods
     - Access-Control-Allow-Headers
     - Access-Control-Allow-Origin
@@ -167,7 +167,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 
 -IAM Permissions:
     - Create an IAM policy if other AWS services access the API Gateway from the same account
-    - Levarege "Sig v4" capability where IAM credentials are in headers
+    - Leverage "Sig v4" capability where IAM credentials are in headers
     - Authentication = IAM | Authorization = IAM Policy
     - Resource policies:
         - Set policy on the API Gateway and set who can access it
