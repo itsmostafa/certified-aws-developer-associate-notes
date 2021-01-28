@@ -42,6 +42,7 @@
   - [SAM](3-aws-serverless/sam.md)
   - [Cognito](3-aws-serverless/cognito.md)
   - [Step Functions](3-aws-serverless/stepfunctions.md)
+  - [AppSync](3-aws-serverless/appsync.md)
 
 - Docker based AWS services
   - ECS: Elastic Container Service
