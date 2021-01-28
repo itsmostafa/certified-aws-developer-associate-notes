@@ -37,10 +37,11 @@
 
 - [AWS Serverless](3-aws-serverless/serverless.md)
   - [Lambda](3-aws-serverless/lambda.md)
-  - DynamoDB
+  - [DynamoDB](3-aws-serverless/dynamodb.md)
   - [API Gateway](3-aws-serverless/apigateway.md)
   - [SAM](3-aws-serverless/sam.md)
   - [Cognito](3-aws-serverless/cognito.md)
+  - Step Functions
 
 - Docker based AWS services
   - ECS: Elastic Container Service
