@@ -41,7 +41,7 @@
   - [API Gateway](3-aws-serverless/apigateway.md)
   - [SAM](3-aws-serverless/sam.md)
   - [Cognito](3-aws-serverless/cognito.md)
-  - Step Functions
+  - [Step Functions](3-aws-serverless/stepfunctions.md)
 
 - Docker based AWS services
   - ECS: Elastic Container Service
