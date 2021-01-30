@@ -1,12 +1,12 @@
 # Cognito
 
-- Used to give access for user/clients to be able to interact without applications.
+- Used to give access for users/clients to be able to interact with our applications.
 - **Cognito User Pools**:
     - Sign in functionality
     - Integrates with API Gateway and Application Load Balancer
 - **Cognito Identity Pools (Federated Identity)**:
-    - Provide AWS credentials to users to access AWS resources directly
-    - Integrate with Cognito User Pools as an identity provider:
+    - Provides AWS credentials to users to access AWS resources directly
+    - Integrates with Cognito User Pools as an identity provider
 - **Cognito Sync**:
     - Synchronize data from devices to Cognito
     - Deprecated: use AppSync
@@ -80,11 +80,11 @@
 
 ## Cognito Sync
 
-- Deprecated - use AppSync
-- Store preferences, configuration, state of app
-- Cross device services (any platform - IOS, Android, etc.)
+- Deprecated - use AppSync instead
+- Used to store preferences, configuration, state of app
+- Cross device synchronization (any platform - IOS, Android, etc.)
 - Offline capability (synchronize when back online)
 - Store data in datasets (up to 1MB), up to 20 datasets
-- Push Sync: silently notify across all devices when identity data changes
-- Cognito Stream: stream data from Cognito into Kinesis
-- Cognito Events: execute Lambda function in response to events
+- **Push Sync**: silently notify across all devices when identity data changes
+- **Cognito Stream**: stream data from Cognito into Kinesis
+- **Cognito Events**: execute Lambda function in response to events

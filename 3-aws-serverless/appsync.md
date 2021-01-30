@@ -1,9 +1,9 @@
 # AWS AppSync
 
-- Managed service which uses *GraphQL*
-- Used for building APIs on AWS which use *GraphQL*
+- AppSync is a managed service which uses *GraphQL*
+- It is used for building APIs on AWS which use *GraphQL*
 - *GraphQL* makes it easy for applications to get the exact data they need. This includes combining data from multiple resources
-- Datasets behind *GraphQL* can inlcude:
+- Datasets behind *GraphQL* can include:
     - NoSQL data stores
     - RDS databases
     - HTTP APIs

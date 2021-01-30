@@ -1,6 +1,6 @@
 # AWS Step Functions
 
-- Step Functions allow to build visual workflows to orchestrate Lambda Functions
+- Step Functions allow to build visual workflows which are used to orchestrate Lambda Functions
 - Workflow is represented as a JSON state machine
 - Features:
     - Sequence
@@ -12,10 +12,10 @@
 - Maximum execution time is 1 year
 - Possibility to implement human approval feature
 - Use cases:
-    - Order fullfillment
+    - Order fulfillment
     - Data processing
     - Web applications
-    - Any worklfow
+    - Any workflow
 - When designing a Step Function we get an aspect of visualization (flow diagram)
 - The execution can be visually represented on this diagram
 - Any state can encounter errors:

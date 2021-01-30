@@ -13,7 +13,7 @@ Why use AWS Lambda?
     - Run on-demand
     - Scaling is fully automated
 
-### Benefits of AWS Lambda
+## Benefits of AWS Lambda
 
 - Easy Pricing:
 - Pay per request and compute time
@@ -31,7 +31,7 @@ AWS Lambda language support:
 - Golang
 - C# / Powershell
 
-### AWS Lambda pricing
+## AWS Lambda pricing
 
 - You can find overall pricing information here: https://aws.amazon.com/lambda/pricing/
 - Pay per calls:
@@ -44,14 +44,14 @@ AWS Lambda language support:
 - After that $1.00 for 600,000 GB-seconds
 - It is usually very cheap to run AWS Lambda which makes it very popular
 
-### AWS Lambda configuration
+## AWS Lambda configuration
 
 - Timeout: default 3 seconds, max of 300s (Note: new limit 15 minutes) - Environment variables
 - Allocated memory (128M to 3G)
 - Ability to deploy within a VPC + assign security groups
 - IAM execution role must be attached to the Lambda function
 
-### AWS Lambda Synchronous Invocation
+## AWS Lambda Synchronous Invocation
 
 - Result of the function is returned right away
 - Synchronous invocation happens when the function is invoked as follows:
@@ -79,14 +79,16 @@ AWS Lambda language support:
 aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-out --payload '{}' --region eu-west-2 response.json 
 ```
 
-- Lambda integration with ELB (ALB):
+### Lambda integration with ELB (ALB)
+
     - Used for exposing a HTTP(S) endpoint
     - The function must be registered in a target group
     - HTTP request is converted by the ALB to JSON and the JSON is passed to the function an input
     - The ALB converts the lambda response back to JSON
-    - Multi-header values: must be enabled. When enabled HTTP headers and query string parameters that are sent with multiple values are shown as arrays within the Lambda event and response object
+    - Multi-header values: by default they are disabled. When enabled HTTP headers and query string parameters that are sent with multiple values are shown as arrays within the Lambda event and response object
 
-- Lambda@Edge:
+### Lambda@Edge
+
     - Lambda function deployed synchronously from CDN using CloudFront
     - Used for running global AWS Lambda function alongside CDN
     - Can be used for request filtering before reaching the final application
@@ -107,13 +109,13 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
         - User prioritization
         - User tracking and analytics
 
-### AWS Lambda Asynchronous Invocation
+## AWS Lambda Asynchronous Invocation
 
 - Mainly invoked after a certain event
 - The events are placed in an internal event queue
-- Automatic retry: 3 retries: first one right after failure, second one waits 1 minute, third one after 2 minutes
-- Lambda function should be idempotent - in case of retries the result is the same
-- Duplicate log entries in CloudWatch logs in case of retry
+- Automatic retry: 3 retries: first one right after failure, second one waits 1 minute, third one after 2 minutes (exponential backoff)
+- Lambda function should be idempotent - in case of retries the result should be the same
+- Retries can cause duplicate log entries in CloudWatch logs
 - DQL: in case of failure after retries the lambda function can send an event to SNS or SQS
 - Services that invoke async lambda functions:
     - S3
@@ -126,7 +128,7 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - CloudFormation
     - Amazon Config
     - Amazon IoT / Iot Events
-- Invoke function asynchronously from CLI:
+- Invoke a function asynchronously from CLI:
 
 ```
 aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-out --payload '{}' --region eu-west-2 --invocation-type Event response.json 
@@ -137,15 +139,15 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - CodePipeline state change
 
 - Invocation from S3 events:
-    - Events: S3:ObjectCreated, S3:ObjectRemoved, etc.
+    - Events: *S3:ObjectCreated*, *S3:ObjectRemoved*, etc.
     - Possible to de object filtering by name (*.jpg)
-    - Possible use case: generate thumbnails of newly uploaded images
+    - Possible use case: generate thumbnails for newly uploaded images
     - S3 event notification typically deliver events in seconds, sometimes it can take longer
-    - If two writes are happening on a single, non-versioned object at the same time, it is possible that only one event gets delivered (solution: enable versioning)
+    - If two writes are happening on a single, non-versioned object at the same time, it is possible that only one event gets delivered (solution: enable versioning on the S3 bucket)
 
-### AWS Lambda Event Source Mapping
+## AWS Lambda Event Source Mapping
 
-- Record needs to be polled from the source
+- Records needs to be polled from the source
 - Applies to SQS queues, Kinesis Data Streams, DynamoDB Streams
 - Lambda function is invoked synchronously
 - 2 categories of event source mapper:
@@ -154,17 +156,17 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
         - New items, from beginning or timestamp
         - Processed items are not removed from the stream
         - Low traffic: use batch window
-        - Hight traffic: multiple batches can be processed in parallel. Up to 10 batch processes per shard, in-order processing for each partition key
+        - High traffic: multiple batches can be processed in parallel. Up to 10 batch processes per shard, in-order processing for each partition key
         - Errors: the entire batch is reprocessed in case of an error until the function succeeds or the items in the batch expire
         - Configure event source mapping to handle errors:
             - discard old events
             - restrict number of retries
             - split the batch on error (mainly used in case of timeout issues)
-            - discarded events can go to a Destination
+            - discarded events can go to a *Destination*
     - Queues (SQS):
         - Event source mapping uses long polling to poll the queue
         - Batch size: 1-10 messages
-        - Recommendation: set the queue visibility to 6x the timeout of the Lambda function
+        - Recommendation: set the queue visibility to *6x the timeout of the Lambda function*
         - DLQ: set-up the DLQ on the queue, not on the Lambda
         - Lambda supports FIFO queues, scaling up to the number of active message groups
         - Lambda scales up to process a standard queue as fast as possible
@@ -176,13 +178,13 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
         - One Lambda invocation per each shard
         - Parallelization: up to 10 batches per shard in the same time
     - Queues:
-        - Lambda adds 60 mire instances per minute to scale up
+        - Lambda adds 60 more instances per minute to scale up
         - Up to 1000 batches of messages simultaneously
     - FIFO queues:
         - Messages within the same group are processed in order
         - Lambda scales to the number of the message groups
 
-### AWS Lambda Destinations
+## AWS Lambda Destinations
 
 - Configure to send result of a function to a destination
 - Async invocations destinations for successful and failed events can be sent to:
@@ -190,10 +192,10 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - SNS
     - Other Lambda
     - EventBridge bus
-- Use destination instead of DLQ new (even if both can be used at the same time)
-- In case of event source mapping: for discarded batches event baches can be sent to SQS and SNS
+- Use destination instead of DLQ (even if both can be used at the same time)
+- In case of event source mapping: for discarded batches, event baches can be sent to SQS and SNS
 
-### IAM Roles for Lambda
+## IAM Roles for Lambda
 
 - Grants permission to Lambda to access other AWS services (obviously :)
 - When we use an event source mapping to invoke a function, Lambda uses the execution role to read event data.
@@ -203,7 +205,7 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - if the IAM policy attached to the principal authorizes it
     - if the resource based policy authorizes
 
-### Environment Variables
+## Environment Variables
 
 - Env. variable =  key / value pair
 - Adjust the system behavior
@@ -211,7 +213,7 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
 - Lambda has its own env. variables
 - Env. variables can be encrypted (KMS), useful for secrets
 
-### Logging / Monitoring
+## Logging / Monitoring
 
 - Integration with CloudWatch logs if the lambda has the IAM policy
 - CloudWatch Metrics:
@@ -221,18 +223,18 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - Iterators for streams
 - Tracing with X-Ray using X-Ray SDK in code
 - Env. variables for X-Ray:
-    - _X_AMZN_TRACE_ID
-    - AWS_XRAY_CONTEXT_MISSING
-    - AWS_XRAY_DAEMON_ADDRESS -  X-Ray Daemon IP_ADDRESS:PORT
+    - **_X_AMZN_TRACE_ID**
+    - **AWS_XRAY_CONTEXT_MISSING**
+    - **AWS_XRAY_DAEMON_ADDRESS** -  X-Ray Daemon *IP_ADDRESS:PORT*
 
 ## Networking
 
-- By default: Lambda is launched outside of user VPC, so it can not access resources from our VPC
+- By default: Lambda is launched outside of user VPC, so it can not access resources from inside of a private VPC
 - Lambda can be deployed in a VPC:
     - Lambda will create a ENI (Elastic Network Interface)
-    - Needed AWSLambdaVPCAccessExecutionRole
+    - Needed *AWSLambdaVPCAccessExecutionRole*
 - By default: Lambda in an user defined VPC can not access internet (even if the VPC is public). Solution: NAT Gateway / Instance, Lambda deployed in a private subnet
-- DynamoDB can be access via VPC endpoints (or via public internet)
+- DynamoDB can be accessed via VPC endpoints (or via public internet)
 - CloudWatch logs work in private subnet without NAT
 
 ## Configuration / Performance
@@ -247,31 +249,31 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - Temporary runtime env. that initializes any external dependency
     - Great for DB connections, HTTP clients
     - Is maintained for some time in anticipation of another Lambda invocation
-    - Does include the /tmp directory (512MB disk space)
+    - Does include the **/tmp** directory (512MB disk space)
     - Recommended: initialize DB connections outside of function handler, it can be reused for next execution
-    - For permanent persistance use S3 (not /tmp)!
+    - For permanent persistence use S3 (not /tmp)!
 - Concurrency:
-    - Limit: up to 1000 concurrent executions
+    - Limit: up to 1000 concurrent executions per account
     - Reserved concurrency creates a pool of requests that can only be used by its function, and also prevents its function from using unreserved concurrency
     - Invocation over concurrency limit will trigger throttle
     - Throttle behavior:
         - Sync invocation => return ThrottleError - 429
         - Async invocation => automatic retry and DLQ
-    - If higher limit is required, open a support ticket
+    - If higher limit is required per account, open a support ticket
     - In case of reserved concurrency not set, one function could throttle other function, max concurrency limit is applied globally to a single account 
     - In case of async invocation Lambda will attempt to run the function again for 6 hours. The retry interval increases exponentially
     - Cold start: in case of a new function instance, first request can take longer because of initialization
     - Provisioned concurrency initializes a requested number of execution environments so that they are prepared to respond to your function's invocations => no cold start!
     - Application Auto Scaling can manage concurrency (schedule or target utilization)
 
-### External Dependencies
+## External Dependencies
 
 - Dependencies, packages need to be installed together with Lambda code (zip package)
 - Zip can be uploaded to Lambda if it has less than 50MB. Otherwise use S3
 - Native libraries need to be compiled on Amazon Linux
 - AWS SDK comes together with every Lambda function
 
-### Cloud Formation
+## CloudFormation
 
 - Code can be defined in-line (for very simple functions)
 - Inline functions can not include dependencies
@@ -280,7 +282,7 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - We can use S3 where we should refer to the location of the zip file in a bucket
         - Note: if we update the code in S3 but don't update the S3Bucket, S3Key or S3ObjectVersion in the template, CloudFormation wont update the function, **versioning is import**
 
-### AWS Lambda Layers
+## AWS Lambda Layers
 
 - Custom Runtimes for Lambda, example:
     - C++ [https://github.com/awslabs/aws-lambda-cpp](aws-lambda-cpp)
@@ -289,33 +291,34 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
 dependency packages
 - Another function could reuse layers
 
-### AWS Lambda Versions and Aliases
+## AWS Lambda Versions and Aliases
 
-- When we work on a Lambda function, we work on $LATEST version
-- When ready to publish, we create a new version
+- When we work on a Lambda function, we work on *$LATEST* version
+- When we are ready to publish, we create a new version
 - Versions are immutable (can not change to code, env. variables of anything after a version is published)
 - Versions have increasing number
 - Each version is independent and it gets its own ARN
 - Each version of the lambda can be accessed
 - Alias:
     - Pointer to a Lambda function version
-    - We can defined dev, test prod aliases which can point to different versions
+    - We can defined dev, test, prod aliases which can point to different versions
     - Aliases are mutable
     - Aliases enable Blue/Green deployment by assigning weights to Lambda functions
     - Aliases enable stable configurations of our event triggers/destinations
     - Aliases have their own ARN
     - **Aliases can not reference other aliases!**
 
-### CodeDeploy
+## CodeDeploy
 
 - Can help automate traffic shift for Lambda aliases
 - Feature is integrated within SAM framework
-- Linear growth: traffic grows every N minutes until 100%
-- Canary: try X percent then 100%
-- AllAtOnce: immediate (quickest, most dangerous)
-- Rollback: can create pre and post traffic hooks to check the health of the Lambda function
+- Traffic shifting methodologies:
+    - Linear growth: traffic grows every N minutes until 100%
+    - Canary: try X percent then 100%
+    - AllAtOnce: immediate (quickest, most dangerous)
+    - Rollback: can create pre and post traffic hooks to check the health of the Lambda function
 
-### AWS Lambda Limits
+## AWS Lambda Limits
 
 - Execution:
     - Memory: 128MB -  3008MB (64MB increments)
@@ -329,7 +332,7 @@ dependency packages
     - Uncompressed (code + dependencies): 250MB
     - Can use /tmp to load other files at startup
 
-### Best practices
+## Best practices
 
 - Perform heavy-duty work outside of the function handler
 - Use env. variables for anything that changes over time

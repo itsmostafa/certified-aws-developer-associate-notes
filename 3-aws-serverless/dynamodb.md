@@ -1,20 +1,20 @@
 # DynamoDB
 
 - NoSQL serverless database
-- Fully managed, highe available with replication accross 3 AZs
+- Fully managed, highly available with replication accross 3 AZs
 - Scales to massive workloads, distributed
 - Millions records per seconds, trillions of rows, 100TB of storage
-- Fast and consistend in performance (low latency retrieval)
-- Integrates with IAM for security and administrations
+- Fast and consistent in performance (low latency retrieval)
+- Integrates with IAM for security and administration
 - Enables event driven programming
 - Low cost
 
 | Traditional databases                                      | NoSQL
 | ---------------------------------------------------------- | ------------------------------------------------------------- |
-| Traditional applications levarege RDBMS databases          | Non-relational, **distributed** databases                     |
+| Traditional applications leverage RDBMS databases          | Non-relational, **distributed** databases                     |
 | SQL query language                                         | Many different query languages, SQL can be one                |
-| Strong requirements abouth how the data should be modelled | All the data should be present in one row                     |
-| Ability to do joins, aggregations and computations         | Do not support join, dont perfrom aggregations such as "SUM"  |
+| Strong requirements about how the data should be modelled | All the data should be present in one row                     |
+| Ability to do joins, aggregations and computations         | Do not support join, can't perform aggregations such as "SUM"  |
 | Vertical scaling                                           | **Horizontal scaling**                                        |
 
 ## DynamoDB Basics
@@ -32,8 +32,8 @@
 ## DynamoDB Primary Keys
 
 - Option I: partition key only (HASH), should be uniq
-    - Partition key must be uniq for each item
-    - Partition key must be "diveres" so data will be distributed
+    - Partition key must be unique for each item
+    - Partition key must be "diverse" so data will be distributed
 - Option II: partition key + sort key, combination should be uniq
     - Data is grouped by partition key
     - Sort key = range key
@@ -43,7 +43,7 @@
 - Table must have a provisioned read and write capacity
 - **Read Capacity Units (RCU)**: throughput for reads
 - **Write Capacity Units (WCU)**: throughput for writes
-- Option to setiup auto-scaling of throughput to meet demand
+- Option to setup auto-scaling of throughput to meet demand
 - Throughput can be exceeded temporarily using "burst credits"
 - If no burst credits are available, we get a **ProvisionedThroughputException**
 - We should use exponential back-off for retries in case get the exception above
@@ -157,7 +157,7 @@
     - Can be combined with projection expressions
 
 - **Query**
-    - PartitionKey value (*must be = operator*)
+    - PartitionKey value (*must be equals ("=") operator*)
     - SortKey value (operators: =, <, <= >, >=, Between, Begin) - optional
     - FIlterExpresion to further filter the data (this will happen on the client side)
     - Returns up to 1MB of data or number of items specified by the **Limit**

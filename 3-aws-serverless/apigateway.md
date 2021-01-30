@@ -1,6 +1,6 @@
 # API Gateway
 
-Allows us to create REST APIs which can be public and accessible to the clients. It can proxy requests to lambdas and other services which expose HTTP end-points.
+Allows us to create REST APIs which can be public and accessible to the clients. It can proxy requests to Lambda functios and other services which expose HTTP end-points.
 
 ## Overview
 
@@ -106,14 +106,14 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 
 - If we want to make an API available as an offering ($) to customers
 - Usage plans:
-    - who can access one ore more API stages
-    - how many request can they perform in a given period of time
+    - Who can access one or more API stages
+    - How many request can they perform in a given period of time
     - API key can be used to identify clients and meter their access
 - API keys:
-    - alphanumeric strings
-    - clients can securely use the API and we can authenticate requests
-    - we can control access
-    - quota limits is the overall number of requests
+    - Alphanumeric strings
+    - Clients can securely use the API and we can authenticate requests
+    - We can control access
+    - Quota limits is the overall number of requests
 - Order:
     1. Create one or more APIs and deploy them into stages
     2. Generate/import API keys which can be distributed to application developers/customers
@@ -140,11 +140,11 @@ Allows us to create REST APIs which can be public and accessible to the clients.
         - **4XXError** - client side errors
         - **5XXError** - server side errors
 - Throttling
-    - Account limit by default is 10K request per second across all APIs
+    - Global account limit by default is 10K request per second across all APIs
     - Soft limit, can be increased upon request
     - In case of throttling => 429 Too Many Requests
-    - Can set stage limit & method limit to not use every request in case of a single API
-    - Can create usage plans to throttle customer
+    - We can set stage limit & method limit to not use every request in case of a single API
+    - We can create usage plans to throttle customer
 - Errors:
     - 4xx client errors
         - 400: Bad Request
@@ -166,8 +166,8 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 ## Security and IAM Permissions
 
 -IAM Permissions:
-    - Create an IAM policy if other AWS services access the API Gateway from the same account
-    - Leverage "Sig v4" capability where IAM credentials are in headers
+    - We should create an IAM policy if other AWS services access the API Gateway from the same account
+    - We can leverage "Sig v4" capability where IAM credentials are in headers
     - Authentication = IAM | Authorization = IAM Policy
     - Resource policies:
         - Set policy on the API Gateway and set who can access it
@@ -188,7 +188,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 
 - HTTP APIs:
     - Low latency, cost effective AWS lambda proxy, HTTP proxy and private integration (no data mapping)
-    - supported authorization: OIDC, OAuth2 CORS
+    - Supported authorization: OIDC, OAuth2 CORS
     - No usage plans and API keys
 - REST APIs:
     - No native OpenID Connect / OAuth 2.0 support
