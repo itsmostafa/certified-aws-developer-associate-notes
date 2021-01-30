@@ -89,25 +89,25 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
 
 ### Lambda@Edge
 
-    - Lambda function deployed synchronously from CDN using CloudFront
-    - Used for running global AWS Lambda function alongside CDN
-    - Can be used for request filtering before reaching the final application
-    - Can change CloudFront requests and responses:
-        - After CloudFront receives a request from viewer (view request)
-        - Before CloudFront forwards a request to origin (origin request)
-        - After CloudFront receives the response from the origin (origin response)
-        - Before CloudFront forwards the response to the viewer (viewer response)
-    - Use cases:
-        - Website security and privacy
-        - Dynamic web application at the Edge
-        - Search engine optimization (SEO)
-        - Intelligent route across origins and data centers
-        - Bot mitigation at the Edge
-        - Real-time image transformation
-        - A/B testing
-        - User authentication/authorization
-        - User prioritization
-        - User tracking and analytics
+- Lambda function deployed synchronously from CDN using CloudFront
+- Used for running global AWS Lambda function alongside CDN
+- Can be used for request filtering before reaching the final application
+- Can change CloudFront requests and responses:
+    - After CloudFront receives a request from viewer (view request)
+    - Before CloudFront forwards a request to origin (origin request)
+    - After CloudFront receives the response from the origin (origin response)
+    - Before CloudFront forwards the response to the viewer (viewer response)
+- Use cases:
+    - Website security and privacy
+    - Dynamic web application at the Edge
+    - Search engine optimization (SEO)
+    - Intelligent route across origins and data centers
+    - Bot mitigation at the Edge
+    - Real-time image transformation
+    - A/B testing
+    - User authentication/authorization
+    - User prioritization
+    - User tracking and analytics
 
 ## AWS Lambda Asynchronous Invocation
 
