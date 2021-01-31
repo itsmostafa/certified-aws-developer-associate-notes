@@ -1,6 +1,6 @@
 # API Gateway
 
-Allows us to create REST APIs which can be public and accessible to the clients. It can proxy requests to Lambda functios and other services which expose HTTP end-points.
+Allows us to create REST APIs which can be public and accessible to the clients. It can proxy requests to Lambda functions and other services which expose HTTP end-points.
 
 ## Overview
 
@@ -9,10 +9,10 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - Handles API versioning
 - Handles multiple environments (dev, test, prod)
 - Handles security (authentication and authorization)
-- Can create API keys => request throttling
-- Swagger/OpenAPI import to quickly define APIs
+- Ability to create API keys => request throttling
+- Supports Swagger/OpenAPI import to quickly define APIs
 - Transform and validate requests
-- Can cache API responses
+- Ability to cache API responses
 
 ### Integrates with
 
@@ -39,8 +39,8 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - Stage variables:
     - Env. variables for API Gateway stages
     - Use case: configure HTTP end-point to which the stage talks to; pass configuration parameters to Lambda functions
-    - Stage variables are passed as to the "context" object in AWS Lambda
-- Common pattern to the API Gateway and stage variables:
+    - Stage variables are passed to the "context" object in AWS Lambda
+- Common pattern for the API Gateway and stage variables:
     - We create stage variables to indicate the corresponding Lambda alias
     - In stage resource configuration we can reference the Lambda function and the stage variables as follows: `lambda-function-name:${stageVariable.lambdaAlias}` 
 
@@ -50,7 +50,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - We can choose the % of the traffic the canary channel receives
 - This will allow to test the API Gateway new version
 - Metrics and logs are separated for original stage and canary stage
-- Possibility  to override any variable for canary
+- Possibility to override any variable for canary
 - Equivalent of Blue/Green deployments
 
 ## API Gateway Integration Types
@@ -69,7 +69,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - They are only usable for integration with AWS services
 - They can be used for modify requests and responses
 - Uses Velocity Template Language (VTL)
-- Filter output results
+- We can filter output results
 - Concrete example: integrate JSON to XML with SOAP
     - SOAP is XML based, REST is JSON based
     - Client interacts with API Gateway using JSON, API Gateway interacts with the SOAP endpoint using XML
@@ -93,14 +93,14 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 - Caching can reduce the number of calls made to the back-end
 - Default TTL is 3000 seconds (min: 0, max: 3600s)
 - Caching is defined per stage (one cache per stage)
-- Possible to override cache setting sper method
+- Possible to override cache setting per method
 - Cache can be encrypted
 - Cache capacity can be between 0.5GB up to 237GB
 - Cache is expensive, use it only in production
 - Cache can be invalidated by:
     - Flush the entire cache immediately
     - Clients can invalidate cache with the header `Cache-Control: max-age=0` (needs IAM auth)
-    - In case of lack of InvalidateCache policy, any client can invalidate the cache
+    - In case of lack of *InvalidateCache* policy, any client can invalidate the cache
 
 ## API Gateway Usage Plans & API Keys
 
