@@ -36,10 +36,13 @@
 - [YAML](2-aws-deep-dive/yaml.md)
 
 - [AWS Serverless](3-aws-serverless/serverless.md)
-  - Lambda
-  - DynamoDB
-  - API Gateway
-  - Cognito
+  - [Lambda](3-aws-serverless/lambda.md)
+  - [DynamoDB](3-aws-serverless/dynamodb.md)
+  - [API Gateway](3-aws-serverless/apigateway.md)
+  - [SAM](3-aws-serverless/sam.md)
+  - [Cognito](3-aws-serverless/cognito.md)
+  - [Step Functions](3-aws-serverless/stepfunctions.md)
+  - [AppSync](3-aws-serverless/appsync.md)
 
 - Docker based AWS services
   - ECS: Elastic Container Service
