@@ -1,6 +1,6 @@
 # SNS: Simple Notification Service
 
-SNS is a fully managed messing service for both application to application (A2A) and application to person (A2P) communication.
+SNS is a fully managed messaging service for both application to application (A2A) and application to person (A2P) communication.
 
 - The event producer only sends a message to one SNS topic at a time
 - Many event receivers can be created to listen to an SNS topic notification
