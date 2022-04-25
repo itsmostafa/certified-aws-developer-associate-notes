@@ -22,7 +22,7 @@ Kinesis is a managed service service which makes it easy to collect and analyze 
 - Billing is per shard
 - Records are ordered per shard
 
-## Kines API
+## Kinesis API
 
 - PutRecord API: requires a partition key which gets hashed.
 - Partition key should be highly distributed (otherwise a shard can become overwhelmed)
