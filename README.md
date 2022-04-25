@@ -49,7 +49,7 @@
   - Elastic Container Registry
   - Fargate
 
-- [Exam Preperation](#exam-preparation)
+- [Exam Preparation](#exam-preparation)
 
 
 ## Exam Preparation
