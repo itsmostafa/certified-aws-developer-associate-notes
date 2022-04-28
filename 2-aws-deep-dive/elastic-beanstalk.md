@@ -44,7 +44,7 @@ What if you want to update each deployment
   - Fastest, but instances aren't available to serve traffic for awhile (longer downtime)
   - No additional cost
 - **Rolling update**
-  - update a few (bucket) instances at a time, and then move onto the next bucket when the current ones become healthy
+  - Update a few (bucket) instances at a time, and then move onto the next bucket when the current ones become healthy
   - You can set the bucket size
   - Application will run below capacity during update
   - At some point, the application will run both versions simultaneously

@@ -149,7 +149,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
     - 4xx client errors
         - 400: Bad Request
         - 403: Access Denied, WAF filtered
-        - 428: Quota exceeded, Too Many Requests
+        - 429: Quota exceeded, Too Many Requests
     -5xx server errors:
         - 502: Bad Gateway - incompatible output from the back-end or out-of-order invocation due to heavy loads
         - 503: Service Unavailable

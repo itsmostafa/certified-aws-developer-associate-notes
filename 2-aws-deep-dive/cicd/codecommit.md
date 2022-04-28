@@ -7,7 +7,7 @@
     - Make sure the code is backed-up somewhere
     - Makes sure it's fully viewable and auditable
 - AWS CodeCommit
-    - private git repositories
+    - Private git repositories
     - No size limits on the repositories (scale seamlessly)
     - Fully managed and highly available
     - The code is only in your AWS cloud account
