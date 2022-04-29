@@ -27,6 +27,7 @@ RDS Read replicas for read scalability
 * Replication is Async, so reads are eventually consistent
 * Replicas can be promoted to their own DB
 * Applications must update the connection string to leverage read replicas
+* To enable read replicas, you need to enable backups
 
 RDS Read Replicas – Use Cases
 - You have a production database that is taking on normal load
