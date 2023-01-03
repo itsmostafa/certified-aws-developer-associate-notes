@@ -45,7 +45,7 @@
 - **Write Capacity Units (WCU)**: throughput for writes
 - Option to setup auto-scaling of throughput to meet demand
 - Throughput can be exceeded temporarily using "burst credits"
-- If no burst credits are available, we get a **ProvisionedThroughputException**
+- If no burst credits are available, we get a **ProvisionedThroughputExceededException**
 - We should use exponential back-off for retries in case get the exception above
 - One write capacity unit represents one write per second for an item up to 1KB in size
 - If the items are larger than 1KB, more WCU is consumed
