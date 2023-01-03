@@ -1,6 +1,6 @@
 # Certified AWS Associate Developer Notes
 
-### 2021 AWS developer associate exam 
+### 2022 AWS developer associate exam 
 
 ## Table of contents
 
