@@ -31,10 +31,10 @@
 
 ## DynamoDB Primary Keys
 
-- Option I: partition key only (HASH), should be uniq
+- Option I: partition key only (HASH), should be unique
     - Partition key must be unique for each item
     - Partition key must be "diverse" so data will be distributed
-- Option II: partition key + sort key, combination should be uniq
+- Option II: partition key + sort key, combination should be unique
     - Data is grouped by partition key
     - Sort key = range key
 
@@ -205,7 +205,7 @@
 
 ## DynamoDB Concurrency Model
 
-- Conditional update/delete: ensures the item hasn't change bnefore altering it
+- Conditional update/delete: ensures the item hasn't change before altering it
 - This feature makes DynamoDB an **optimistic locking / concurrent** database
 
 ## DynamoDB Accelerator (DAX)
@@ -286,6 +286,7 @@
     ```
     aws dynamodb scan --table-name blog-posts --projection-expression "post_id, content" --region us-east-2 --page-size 10 --max-items 1 --starting-token <token>
     ```
+- You can return the RCU of the table by adding the attribute `--return-consumed-capacity TOTAL` or `--return-consumed-capacity INDEXES` to the query. It will return the RCU (WCU will always be 0 in this case, since you are doing a query)
 
 ## DynamoDB Transactions
 

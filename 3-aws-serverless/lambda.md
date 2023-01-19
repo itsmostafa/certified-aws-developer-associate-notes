@@ -339,4 +339,9 @@ dependency packages
 - Minimize deployment package size to its runtime necessities
 - **Avoid recursive code, never have a Lambda function call itself!**
 
+## Docker images
 
+- You can now package and deploy Lambda functions as container images of up to 10 GB in size. 
+- AWS provides you with the base images and you add your code/dependencies
+- You can create your own images implementing the Lambda runtime API
+- Can be used to deploy large workloads (like machine learning or data intensive workloads)

@@ -27,6 +27,7 @@ RDS Read replicas for read scalability
 * Replication is Async, so reads are eventually consistent
 * Replicas can be promoted to their own DB
 * Applications must update the connection string to leverage read replicas
+* To enable read replicas, you need to enable backups
 
 RDS Read Replicas – Use Cases
 - You have a production database that is taking on normal load
@@ -126,64 +127,3 @@ Global Aurora
 	- Helps for decreasing latency
 	• Promoting another region (for disaster recovery) has an RTO of < 1 minute
 	
-Amazon ElastiCache Overview
-- The same way RDS is to get managed Relational Databases...
-- ElastiCache is to get managed Redis or Memcached
-- Caches are in-memory databases with really high performance, low latency
-- Helps reduce load off of databases for read intensive workloads
-- Helps make your application stateless
-- AWS takes care of OS maintenance / patching, optimizations, setup, configuration, monitoring, failure recovery and backups
-- Using ElastiCache involves heavy application code changes
-
-ElastiCache Solution Architecture - DB Cache
-- Applications queries ElastiCache, if not available, get from RDS and store in ElastiCache.
-- Helps relieve load in RDS.
-- Cache must have an invalidation strategy to make sure only the most current data is used in there.
-
-ElastiCache Solution Architecture – User Session Store
-- User logs into any of the application
-- The application writes the session data into ElastiCache
-- The user hits another instance of our application
-- The instance retrieves the data and the user is already logged in
-
-ElastiCache – Redis vs Memcached
-- REDIS
-	- Multi AZ with Auto-Failover
-	- Read Replicas to scale reads and have high availability
-	- Data Durability using AOF persistence
-	- Backup and restore features
-
-- MEMCACHED
-	- Multi-node for partitioning of data (sharding)
-	- Non persistent
-	- No backup and restore
-	- Multi-threaded architecture
-	
-Caching Implementation
-- Lazy Loading / Cache-Aside / Lazy Population
-	- Pros
-		- Only requested data is cached (the cache isn’t filled up with unused data)
-		- Node failures are not fatal (just increased latency to warm the cache)
-	- Cons
-		- Cache miss penalty that results in 3 round trips, noticeable delay for that request
-		- Stale data: data can be updated in the database and outdated in the cache
-		
-Write Through – Add or Update cache when database is updated
-	- Pros:
-		- Data in cache is never stale, reads are quick
-		- Write penalty vs Read penalty (each write requires 2 calls)
-	- Cons:
-		- Missing Data until it is added / updated in the DB. Mitigation is to implement Lazy Loading strategy as well
-		- Cache churn – a lot of the data will never be read
-		
-Cache Evictions and Time-to-live (TTL)
-- Cache eviction can occur in three ways: 
-	- You delete the item explicitly in the cache
-	- Item is evicted because the memory is full and it’s not recently used (LRU) 
-	- You set an item time-to-live(orTTL)
-- TTL are helpful for any kind of data: 
-	- Leaderboards
-	- Comments
-	- Activity streams
-- TTL can range from few seconds to hours or days
-- If too many evictions happen due to memory, you should scale up or out
