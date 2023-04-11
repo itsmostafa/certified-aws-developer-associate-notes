@@ -1,6 +1,6 @@
 # Certified AWS Associate Developer Notes
 
-### 2022 AWS developer associate exam 
+### 2023 AWS developer associate exam 
 
 ## Table of contents
 
@@ -67,7 +67,7 @@
         - Monitoring and Troubleshooting: CloudWAtch, CloudTrail, X-Ray
 
     - Exam Guide:
-        - [Certified Developer - Associate Exam PDF](https://d1.awsstatic.com/training-and-certification/docs-dev-associate/AWS_Certified_Developer_Associate-Exam_Guide_EN_1.4.pdf)
+        - [Certified Developer - Associate Exam PDF](https://d1.awsstatic.com/training-and-certification/docs-dev-associate/AWS-Certified-Developer-Associate_Exam-Guide.pdf)
 
 - EC2 + IAM Exam Checklist
   * Know how to SSH into EC2 (and change .pem file permissions) 
