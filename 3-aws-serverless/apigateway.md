@@ -91,7 +91,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 ## Caching in API Gateway
 
 - Caching can reduce the number of calls made to the back-end
-- Default TTL is 3000 seconds (min: 0, max: 3600s)
+- Default TTL is 300 seconds (min: 0, max: 3600s)
 - Caching is defined per stage (one cache per stage)
 - Possible to override cache setting per method
 - Cache can be encrypted
