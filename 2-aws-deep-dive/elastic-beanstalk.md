@@ -4,7 +4,7 @@
 - A managed service
   - Instance configuration
   - OS is handled by Beanstalk
-  - Deployment strategy is configurableut performed by Beanstalk
+  - Deployment strategy is configurable performed by Beanstalk
   - Application code configurable
 - It will leverage all the AWS components that we have gone over thus far:
   - EC2
@@ -14,7 +14,7 @@
   - Etc..
 - Elastic Beanstalk is free but you pay for the underlying instances
 - Three architecture models:
-  - Single instance deployment: good for developers
+  - Single instance deployment: great for development and testing purposes
   - LB + ASG: great for production or staging web applications
   - ASG only: great for non-web apps in production
 - Elastic Beanstalk has three components:
@@ -41,7 +41,7 @@
 
 What if you want to update each deployment
 - **All at once (deploy on the go)**
-  - Fastest, but instances aren't available to serve traffic for awhile (longer downtime)
+  - Fastest, but instances aren't available to serve traffic for a while (longer downtime)
   - No additional cost
 - **Rolling update**
   - Update a few (bucket) instances at a time, and then move onto the next bucket when the current ones become healthy
