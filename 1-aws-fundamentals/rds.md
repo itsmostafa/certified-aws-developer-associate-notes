@@ -22,7 +22,7 @@ Advantages of RDS over deploying a database in EC2
 * But you can’t SSH into your instances (amazon manages them for you)
 
 RDS Read replicas for read scalability
-* Up to 5 read replicas
+* Up to 15 read replicas(MySQL, MariaDB and PostgreSQL) and 5 read replicas(Oracle and SQL Server)
 * Within AZ, Cross AZ or Cross region
 * Replication is Async, so reads are eventually consistent
 * Replicas can be promoted to their own DB
