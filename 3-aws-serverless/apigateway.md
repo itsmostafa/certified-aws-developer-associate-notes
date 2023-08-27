@@ -135,7 +135,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
     - Useful metrics: 
         - **CacheHitCount** and **CacheMissCount** give information about the efficiency of the cache
         - **Count** - the total number of API requests
-        - **IntegrationLatency** - the time between the request are relayed the the back-end and response is received by the API Gateway
+        - **IntegrationLatency** - the time between the request are relayed to the back-end and response is received by the API Gateway
         - **Latency** - total time between request and response. Max amount of time a request can perform is **29 seconds**
         - **4XXError** - client side errors
         - **5XXError** - server side errors
