@@ -29,7 +29,7 @@ If your machine is stopped and then restarted, the public IP will change
   
 ## EC2 Meta Data
 * Information about your EC2 instance
-* It allows EC2 isntances to "learn" about themselves without having to use an IAM role for that purpose
+* It allows EC2 instances to "learn" about themselves without having to use an IAM role for that purpose
 * Powerful but one of the least known features to developers
 * You can retrieve IAM roles from the metadata but **not** IAM policies
 * URL: {ec2-ip-address}/latest/meta-data
