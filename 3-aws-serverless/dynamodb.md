@@ -1,7 +1,7 @@
 # DynamoDB
 
 - NoSQL serverless database
-- Fully managed, highly available with replication accross 3 AZs
+- Fully managed, highly available with replication across 3 AZs
 - Scales to massive workloads, distributed
 - Millions records per seconds, trillions of rows, 100TB of storage
 - Fast and consistent in performance (low latency retrieval)
@@ -20,9 +20,9 @@
 ## DynamoDB Basics
 
 - Made of **tables**
-- Each tables has a **primary key**
+- Each table has a **primary key**
 - Each table can have inf. number of rows(items)
-- Each item can have **attributes** (columns, but the can be nested)
+- Each item can have **attributes** (columns, but they can be nested)
 - Max size of an item is 400KB
 - Data types supported:
     - Scalar: String, Number, Binary, Boolean, Null
@@ -65,7 +65,7 @@
 
 - **Eventually consistent reads**: if we read after a while it is possible to get unexpected data, there is a possibility that the data did not replicate to every node
 - **Strongly consistent reads**: if we read data just after the write we get correct data
-- By default: DynamoDB uses eventually consistent reads, but *GetItem*, *Query* and *Scan* can provide a **ConsistentRead** parameter to achive strong consistency
+- By default: DynamoDB uses eventually consistent reads, but *GetItem*, *Query* and *Scan* can provide a **ConsistentRead** parameter to achieve strong consistency
 - One read capacity unit represents one strongly consistent read per second, or two eventually consistent reads per second for an item up to 4KB in size
 - If the items are larger than 4KB, more RCU is consumed
 
@@ -90,7 +90,7 @@
 
 ## DynamoDB Internal Partitions
 
-- Data is devided in partitions
+- Data is divided in partitions
 - Partition keys are hashed in order to know in which partition will the data go
 - To compute the number of partitions:
     - Capacity: `(TOTAL RCU / 3000) + (TOTAL WCU / 1000)`
@@ -117,7 +117,7 @@
 - **PutItem** - write data to DynamoDB (create data or full replace data)
     - Consumes WCU
 - **UpdateIem** - update data in DynamoDB (partial update of attributes)
-    - Possibility to use Atomic Counters and increas them
+    - Possibility to use Atomic Counters and increase them
 - **Conditional Writes**:
     - Accept a write/update only if some conditions are met
     - Helps with concurrent access
