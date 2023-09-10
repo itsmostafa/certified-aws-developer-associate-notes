@@ -51,7 +51,7 @@ User Session Store
 		- Cache miss penalty that results in 3 round trips, noticeable delay for that request
 		- Stale data: data can be updated in the database and outdated in the cache
 		
-Write Through – Add or Update cache when database is updated
+- Write Through – Add or Update cache when database is updated
 	- Pros:
 		- Data in cache is never stale, reads are quick
 		- Write penalty vs Read penalty (each write requires 2 calls)
