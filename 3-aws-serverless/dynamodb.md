@@ -147,7 +147,7 @@
 - **GetItem**
     - Read based on the primary key
     - Primary key = HASH or HASH-RANGE (partition key + sort key)
-    - Eventually consisted by default, but has an option to have strong consistency
+    - Eventually consistent by default, but has an option to have strong consistency
     - **ProjectionExpression** can be specified to include only certain attributes
 
 - **BatchGetItem**
