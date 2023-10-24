@@ -21,7 +21,7 @@ infrastructure
 
 **Note**: This is an introduction to CloudFormation
 - It can take over 3 hours to properly learn and master CloudFormation
-- This section is meant, so you get a good idea of how it works
+- This section is meant for you get a good idea of how it works
 - We’ll be slightly less hands-on than in other sections
 - We’ll learn everything we need to answer questions for the exam
 - The exam does not require you to actually write CloudFormation
