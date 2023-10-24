@@ -17,7 +17,7 @@ Load balancers are servers that forward internet traffic to multiple servers (EC
 * AWS takes care of upgrades, maintenance, high availability
 * AWS provides only a few configuration knobs
 
-It costs less to setup your own load balancer but it will be a lot more effort on your end. It is integrated with many AWS offerings / services
+It costs less to setup your own load balancer, but it will be a lot more effort on your end. It is integrated with many AWS offerings / services
 
 #### Types of load balancers on AWS
 * Classic Load Balancer (v1 - older generation - 2009)

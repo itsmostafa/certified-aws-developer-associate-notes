@@ -2,7 +2,7 @@
 
 - Provides governance, compliance and audit for your AWS Account
 - CloudTrail is enabled by default!
-- Get an history of events / API calls made within your AWS Account by:
+- Get a history of events / API calls made within your AWS Account by:
     - Console
     - SDK
     - CLI

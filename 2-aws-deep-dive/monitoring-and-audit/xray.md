@@ -32,7 +32,7 @@
 - **Tracing** is an end to end way to following a “request”
 - Each component dealing with the request adds its own “trace”
 - Tracing is made of segments (+ sub segments)
-- Annotations can be added to traces to provide extra-information
+- Annotations can be added to trace to provide extra-information
 - Ability to trace:
     - Every request
     - Sample request (as a % for example or a rate per minute)
@@ -56,7 +56,7 @@
 ### X-Ray's internal magic
 - X-Ray service collects data from all the different services
 - Service map is computed from all the segments and traces
-- X-Ray is graphical, so even non technical people can help troubleshoot
+- X-Ray is graphical, so even non-technical people can help troubleshoot
 
 ### AWS X-Ray Troubleshooting
 - If X-Ray is not working on EC2:

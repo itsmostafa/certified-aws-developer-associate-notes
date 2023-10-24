@@ -20,8 +20,8 @@
 #### EBS Volume Types
 - EBS Volumes come in 4 types 
 - GP2 (SSD): General purpose SSD volume that balances price and performance for a wide variety of workloads 
-- IO1 (SSD): Highest-performance SSD volume for mission-critical low-latency or high- throughput workloads 
-- ST1 (HDD): Low cost HDD volume designed for frequently accessed, throughput- intensive workloads 
+- IO1 (SSD): Highest-performance SSD volume for mission-critical low-latency or high-throughput workloads 
+- ST1 (HDD): Low cost HDD volume designed for frequently accessed, throughput-intensive workloads 
 - SC1 (HDD): Lowest cost HDD volume designed for less frequently accessed workloads 
 - EBS Volumes are characterized in Size | Throughput | IOPS
 - When in doubt always consult the AWS documentation
@@ -63,7 +63,7 @@
 EBS Snapshots
 * EBS Volumes can be backed up using “snapshots”
 * Snapshots only take the actual space of the blocks on the volume
-* If you snapshot a 100GB drive that only has 5 gb of data, then your EBS snapshot will only be 5 gb
+* If you take a snapshot of a 100GB drive that only has 5 gb of data, then your EBS snapshot will only be 5 gb
 * Snapshots are used for:
     * Backups: ensuring you can save your data in case of catastrophe
     * Volume migration

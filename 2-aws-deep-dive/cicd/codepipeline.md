@@ -18,7 +18,7 @@
 #### Troublshooting
 - CodePipeline state changes happen in **AWS CloudWatch Events**, which can in return create SNS notifications.
 - Ex: you can create events for failed pipelines • Ex: you can create events for cancelled stages
-- If CodePipeline fails a stage, your pipeline stops and you can get information in the console
+- If CodePipeline fails a stage, your pipeline stops, and you can get information in the console
 - AWS CloudTrail can be used to audit AWS API calls
 - If Pipeline can’t perform an action, make sure the “IAM Service Role” attached does have enough permissions (IAM Policy)
 - Make sure to have Versions enabled in the S3 bucket

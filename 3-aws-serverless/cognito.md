@@ -58,7 +58,7 @@
     - Cognito Identity Pools allow for unauthenticated (guest) access
 - Users can then access AWS services directly or through API Gateway
     - The IAM policies applied to the credentials are defined in Cognito
-    - They can be customized based on the user_id for fine grained control
+    - They can be customized based on the user_id for fine-grained control
 
 ### Cognito Identity Pools - IAM Roles
 

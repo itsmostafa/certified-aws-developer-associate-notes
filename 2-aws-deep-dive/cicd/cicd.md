@@ -3,13 +3,13 @@
 - Why use CICD?
     - Ideally, you'd want to set up a CICD to help you automate multiple steps to automate builds, push code to a repository and then deploy to your updated code to AWS.
     - This is a faster, efficient way that also helps minimize potential mistakes as opposed to running multiple manual steps
-    - Automate deployement to different stages (dev, staging, and production)
+    - Automate deployment to different stages (dev, staging, and production)
     - May add manual approvals when needed
 - To be a proper AWS developer, you'd need to learn CICD
 
 - CICD Services in AWS
     - AWS CodeCommit: storing our code (similar to Github)
-    - AWS CodePipeline: automatig our pipeline from code to ElasticBeanstalk
+    - AWS CodePipeline: automating our pipeline from code to ElasticBeanstalk
     - AWS CodeBuild: To build and test code
     - AWS CodeDeploy: deploying code to EC2 fleets (not Beanstalk)
 

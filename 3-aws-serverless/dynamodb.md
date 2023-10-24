@@ -3,7 +3,7 @@
 - NoSQL serverless database
 - Fully managed, highly available with replication across 3 AZs
 - Scales to massive workloads, distributed
-- Millions records per seconds, trillions of rows, 100TB of storage
+- Millions of records per seconds, trillions of rows, 100TB of storage
 - Fast and consistent in performance (low latency retrieval)
 - Integrates with IAM for security and administration
 - Enables event driven programming
@@ -147,7 +147,7 @@
 - **GetItem**
     - Read based on the primary key
     - Primary key = HASH or HASH-RANGE (partition key + sort key)
-    - Eventually consisten by default, but has an option to have strong consistency
+    - Eventually consisted by default, but has an option to have strong consistency
     - **ProjectionExpression** can be specified to include only certain attributes
 
 - **BatchGetItem**
@@ -159,21 +159,21 @@
 - **Query**
     - PartitionKey value (*must be equals ("=") operator*)
     - SortKey value (operators: =, <, <= >, >=, Between, Begin) - optional
-    - FIlterExpresion to further filter the data (this will happen on the client side)
+    - FilterExpression to further filter the data (this will happen on the client side)
     - Returns up to 1MB of data or number of items specified by the **Limit**
     - Able to do pagination
     - We can query a table, secondary index or global secondary index
-    - Efficien way to query DynamoDB!
+    - Efficient way to query DynamoDB!
 
 - **Scan**
     - Scans the entire table and then filter data
     - Returns up to 1MB ot data - we can use pagination to keep reading
-    - Consumes lot of RCU
+    - Consumes a lot of RCU
     - Limit impact using **Limit** /  reduce the size of the result in order to reduce costs
     - Fost faster performance we can use parallel scan
         - Way more RCU!
     - Can we use a combination of *ProjectionExpression + FilterExpression* (no charge to RCU)
-    - Inefficien way to read data from DynamoDB!
+    - Inefficient way to read data from DynamoDB!
 
 ## DynamoDB Indexes
 
@@ -205,7 +205,7 @@
 
 ## DynamoDB Concurrency Model
 
-- Conditional update/delete: ensures the item hasn't change before altering it
+- Conditional update/delete: ensures the item hasn't changed before altering it
 - This feature makes DynamoDB an **optimistic locking / concurrent** database
 
 ## DynamoDB Accelerator (DAX)
@@ -213,12 +213,12 @@
 - It is a seamless caching mechanism for DynamoDB
 - It can be activated without doing any code change on the application which uses the database
 - Writes go through DAX to DynamoDB
-- Micro second latency for cache reads & queryies
-- Solves one big probles: **Hot Key problem** (too many requests for the same key)
+- Micro second latency for cache reads & queries
+- Solves one big problems: **Hot Key problem** (too many requests for the same key)
 - By default: 5 min TTL for every item in the cache
 - Up to 10 nodes in the cluster
 - Multi AZ (3 nodes minimum recommended)
-- Secury (encription at rest with KMS, IAM, CloudTrail)
+- Secure (encryption at rest with KMS, IAM, CloudTrail)
 
 ## DynamoDB Streams
 
@@ -226,15 +226,15 @@
 - This stream can be read by Lambda or by EC2 instances
 - They can react to this changelog by:
     - Doing analytics
-    - Create derivate tables/view
+    - Create derivative tables/view
     - Insert data in ElasticSearch
     - etc.
 - Could implement cross region replication using Streams (nowadays it is a provided feature by DynamoDB)
 - Stream have 24 hours of retention (we can not change this)
-- We can choose what type of informaion ends up in stream:
+- We can choose what type of information ends up in stream:
     - KEYS_ONLY - only the key attributes of the modified items are pushed to the stream
     - NEW_IMAGE - the entire item is pushed to the stream after it was modified
-    - OLD_IMAGE - the entire item is pushed to the stream before it was modfied
+    - OLD_IMAGE - the entire item is pushed to the stream before it was modified
     - NEW_AND_OLD_IMAGES - the entire item is pushed to the stream
 - DynamoDB streams are made of shards, we don't have to provision them
 - Records are not retroactively pushed to the stream after enabling it!
@@ -321,9 +321,9 @@
     - Two users try to update the same record in the same time
     - The last update wins
 - Conditional writes
-    - A write can onyl happen if a specific condition is met
-    - First write will succed, second write will fail because the condition wont be met
-    - Important: **data is not overriden**
+    - A write can only happen if a specific condition is met
+    - First write will succeed, second write will fail because the condition wont be met
+    - Important: **data is not overridden**
 - Atomic writes:
     - INCREASE BY or DECREASE BY writes
 - Batch writes:
@@ -355,7 +355,7 @@
     - VPC Endpoints to access DynamoDB without internet
     - Access fully controlled by IAM
     - Encryption at rest using KMS
-    - Encryption  in transint using SSL/TLS
+    - Encryption  in transit using SSL/TLS
 - Backup/Restore:
     - Point in time restore la RDS
     - No performance impact

@@ -33,7 +33,7 @@ CloudWatch is used for monitoring.
     - Audit changes to AWS Resources by your users
 
 ### CloudWatch Metrics
-- CloudWatch provides metrics for every services in AWS
+- CloudWatch provides metrics for every service in AWS
 - **Metric** is a variable to monitor (CPUUtilization, NetworkIn...)
 - Metrics belong to **namespaces**
 - **Dimension** is an attribute of a metric (instance id, environment, etc...).
