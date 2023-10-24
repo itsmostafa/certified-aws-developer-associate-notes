@@ -12,7 +12,7 @@
   - ELB
   - RDS
   - Etc..
-- Elastic Beanstalk is free but you pay for the underlying instances
+- Elastic Beanstalk is free, but you pay for the underlying instances
 - Three architecture models:
   - Single instance deployment: great for development and testing purposes
   - LB + ASG: great for production or staging web applications
@@ -33,7 +33,7 @@
   - Single Container Docker
   - Multi Container Docker
   - Preconfigure Docker
-  - Write your own custom platforms (If the any of the above is not supported)
+  - Write your own custom platforms (If any of the above is not supported)
 
 #### Elastic Beanstalk Deployment Modes
 - Single Instance mode: Great for development environment
@@ -64,10 +64,10 @@ What if you want to update each deployment
   - High cost, double capacity
   - Longest deployment
   - Quick rollback in case of failures (new ASG will be terminated)
-  - Best for production environements
+  - Best for production environments
 
 #### Deployment Mechanism
-- Describe dependancies
+- Describe dependencies
   - (requirements.txt for python, package.json for node.js)
 - Package code as zip
 - Zip file is uploaded to each EC2 machine

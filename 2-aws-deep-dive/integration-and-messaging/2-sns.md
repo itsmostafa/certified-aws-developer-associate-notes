@@ -45,6 +45,6 @@ SNS is a fully managed messaging service for both application to application (A2
 - Access Controls: IAM policies to regulate access to the SNS API
 
 - SNS Access Policies (similar to S3 Bucket policies)
-    - Useful for mult account access to SNS topics
+    - Useful for multi account access to SNS topics
     - Useful for allowing other services to write to an SNS topic
 

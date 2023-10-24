@@ -21,7 +21,7 @@ infrastructure
 
 **Note**: This is an introduction to CloudFormation
 - It can take over 3 hours to properly learn and master CloudFormation
-- This section is meant so you get a good idea of how it works
+- This section is meant for you get a good idea of how it works
 - We’ll be slightly less hands-on than in other sections
 - We’ll learn everything we need to answer questions for the exam
 - The exam does not require you to actually write CloudFormation
@@ -33,7 +33,7 @@ infrastructure
     - The code can be version controlled for example using git
     - Changes to the infrastructure are reviewed through code
 - Cost
-    - Each resources within the stack is stagged with an identifier so you can easily see how much a stack costs you
+    - Each resource within the stack is staged with an identifier, so you can easily see how much a stack costs you
     - You can estimate the costs of your resources using the CloudFormation template
     - Savings strategy: In Dev, you could automation deletion of templates at 5 PM and recreated at 8 AM, safely
 - Productivity
@@ -50,7 +50,7 @@ infrastructure
 
 #### How CloudFormation works
 - Templates have to be uploaded in S3 and then referenced in CloudFormation
-- To update a template, we can’t edit previous ones. We have to re- upload a new version of the template to AWS
+- To update a template, we can’t edit previous ones. We have to re-upload a new version of the template to AWS
 - Stacks are identified by a name
 - Deleting a stack deletes every single artifact that was created by
 CloudFormation.
@@ -137,7 +137,7 @@ CloudFormation.
 - The Outputs section declares optional outputs values that we can import into other stacks (if you export them first)!
 - You can also view the outputs in the AWS Console or in using the AWS CLI
 - They’re very useful for example if you define a network CloudFormation, and output the variables such as VPC ID and your Subnet IDs
-- It’s the best way to perform some collaboration cross stack, as you let expert handle their own part of the stack
+- It’s the best way to perform some collaborations cross stack, as you let expert handle their own part of the stack
 - You can’t delete a CloudFormation Stack if its outputs are being referenced by another CloudFormation stack
 
 ##### Outputs examples

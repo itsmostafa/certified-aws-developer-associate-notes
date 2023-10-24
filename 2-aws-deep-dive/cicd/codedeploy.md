@@ -13,11 +13,11 @@
 - EC2 will run the deployment instructions
 - CodeDeploy Agent will report of success / failure of deployment on the instance
 
- Additional informations
+ Additional information
 - EC2 instances are grouped by deployment group (dev / test / prod)
 - Lots of flexibility to define any kind of deployments
 - CodeDeploy can be chained into CodePipeline and use artifacts from there
-- CodeDeploy can re-use existing setup tools, works with any application, auto scaling integration
+- CodeDeploy can re-use existing setup tools, works with any application, auto-scaling integration
 - Note: Blue / Green only works with EC2 instances (not on premise)
 - Support for AWS Lambda deployments (we’ll see this later)
 - CodeDeploy does not provision resources
@@ -58,13 +58,13 @@
 - Deployment Targets:
     - Set of EC2 instances with tags
     - Directly to an ASG
-    - Mix of ASG / Tags so you can build deployment segments
+    - Mix of ASG / Tags, so you can build deployment segments
     - Customization in scripts with DEPLOYMENT_GROUP_NAME environment variables
 
  Deployment types:
 - In place deployment
     - half the time
 - Blue / Green Deployment
-    - Attached to one auto scaling group of instances
-    - new auto scaling group of instances created (green)
+    - Attached to one auto-scaling group of instances
+    - new auto-scaling group of instances created (green)
     - if it passes the health checks, version 1 (original asg) is deleted (blue)

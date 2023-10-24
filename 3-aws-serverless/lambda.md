@@ -193,7 +193,7 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - Other Lambda
     - EventBridge bus
 - Use destination instead of DLQ (even if both can be used at the same time)
-- In case of event source mapping: for discarded batches, event baches can be sent to SQS and SNS
+- In case of event source mapping: for discarded batches, event batches can be sent to SQS and SNS
 
 ## IAM Roles for Lambda
 
@@ -231,9 +231,9 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
 
 - By default: Lambda is launched outside of user VPC, so it can not access resources from inside of a private VPC
 - Lambda can be deployed in a VPC:
-    - Lambda will create a ENI (Elastic Network Interface)
+    - Lambda will create an ENI (Elastic Network Interface)
     - Needed *AWSLambdaVPCAccessExecutionRole*
-- By default: Lambda in an user defined VPC can not access internet (even if the VPC is public). Solution: NAT Gateway / Instance, Lambda deployed in a private subnet
+- By default: Lambda in a user defined VPC can not access internet (even if the VPC is public). Solution: NAT Gateway / Instance, Lambda deployed in a private subnet
 - DynamoDB can be accessed via VPC endpoints (or via public internet)
 - CloudWatch logs work in private subnet without NAT
 
@@ -243,7 +243,7 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
     - Can be scaled from 128MB to 3008MB in 64MB increments
     - The more RAM we add, the more vCPU credit we get (vCPU can not be configured separately)
     - Ath 1792MB a function has the equivalent of a full vCPU
-    - After this value we get more than one vCPU, multi-threaded code can leverage this
+    - After this value we get more than one vCPU, multithreading code can leverage this
 - Timeout: by default 3 seconds, max 900 seconds (15 minutes)
 - Execution context:
     - Temporary runtime env. that initializes any external dependency
@@ -269,7 +269,7 @@ aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-
 ## External Dependencies
 
 - Dependencies, packages need to be installed together with Lambda code (zip package)
-- Zip can be uploaded to Lambda if it has less than 50MB. Otherwise use S3
+- Zip can be uploaded to Lambda if it has less than 50MB. Otherwise, use S3
 - Native libraries need to be compiled on Amazon Linux
 - AWS SDK comes together with every Lambda function
 
@@ -301,7 +301,7 @@ dependency packages
 - Each version of the lambda can be accessed
 - Alias:
     - Pointer to a Lambda function version
-    - We can defined dev, test, prod aliases which can point to different versions
+    - We can define dev, test, prod aliases which can point to different versions
     - Aliases are mutable
     - Aliases enable Blue/Green deployment by assigning weights to Lambda functions
     - Aliases enable stable configurations of our event triggers/destinations
@@ -316,7 +316,7 @@ dependency packages
     - Linear growth: traffic grows every N minutes until 100%
     - Canary: try X percent then 100%
     - AllAtOnce: immediate (quickest, most dangerous)
-    - Rollback: can create pre and post traffic hooks to check the health of the Lambda function
+    - Rollback: can create pre- and post-traffic hooks to check the health of the Lambda function
 
 ## AWS Lambda Limits
 
@@ -334,7 +334,7 @@ dependency packages
 
 ## Best practices
 
-- Perform heavy-duty work outside of the function handler
+- Perform heavy-duty work outside the function handler
 - Use env. variables for anything that changes over time
 - Minimize deployment package size to its runtime necessities
 - **Avoid recursive code, never have a Lambda function call itself!**
@@ -342,6 +342,6 @@ dependency packages
 ## Docker images
 
 - You can now package and deploy Lambda functions as container images of up to 10 GB in size. 
-- AWS provides you with the base images and you add your code/dependencies
+- AWS provides you with the base images, and you add your code/dependencies
 - You can create your own images implementing the Lambda runtime API
 - Can be used to deploy large workloads (like machine learning or data intensive workloads)

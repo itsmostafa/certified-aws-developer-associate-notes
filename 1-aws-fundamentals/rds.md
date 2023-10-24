@@ -89,13 +89,13 @@ RDS Security
 
 RDS vs. Aurora
 * Aurora is a proprietary technology from AWS (not open sourced)
-* Postgres and MySQL are both supported as Aurora DB (that means you r drivers will work as if Aurora was a Postgres or MySQL database)
+* Postgres and MySQL are both supported as Aurora DB (that means your drivers will work as if Aurora was a Postgres or MySQL database)
 * Aurora is “AWS cloud optimized” and claims 5x performance improvements over MySQL on RDS, over 3x the performance of Postgres on RDS
 * Aurora storage automatically grows in increments of 10GB, up to 64 TB
 * Aurora can have 15 replicas while MySQL has 5, and the replication process is faster (sub 10 ms replica lag)
 * Failover in Aurora is instantaneous. It’s HA native.
 * Aurora costs more than RDS (20% more) - but is more efficient
-- Aurora support for cross region replication
+- Aurora supports for cross region replication
 
 Aurora DB Cluster
 - writer endpoint : pointing to the master
@@ -111,7 +111,7 @@ Aurora Security
 - You can’t SSH
 
  Aurora Serverless
-- Automated database instantiation and auto- scaling based on actual usage
+- Automated database instantiation and auto-scaling based on actual usage
 - Good for infrequent, intermittent or unpredictable workloads
 - No capacity planning needed
 - Pay per second, can be more cost-effective 

@@ -10,7 +10,7 @@ YAML stands for "YAML Ain't Markup Language"
 - Features:
     - Readable Key value Pairs
     - Nested objects
-        - denoted by: tab indentatiom
+        - denoted by: tab indentation
     - Support Arrays
         - denoted by: -
     - Multi line strings

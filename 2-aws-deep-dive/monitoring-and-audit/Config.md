@@ -1,7 +1,7 @@
 # AWS Config
 
-- AWS Config is usefull to do compliance checks. 
-- It is possible to run compliance checks periodicaly. 
+- AWS Config is useful to do compliance checks. 
+- It is possible to run compliance checks periodically. 
 - AWS Config requires an IAM Role 
    - Read-Only permission to AWS Resources
    - Write access to S3 Bucket 

@@ -62,9 +62,9 @@ If your machine is stopped and then restarted, the public IP will change
 * When you require a fraction of a day / week / month
 #### Spot Instances
 * Can get a discount of up to 90% compared to On-demand
-* You bid a price and get the instance as long as its under the price
+* You bid a price and get the instance as long as it's under the price
 * Price varies based on offer and demand
-* Spot instances are reclaimed within a 2 minute notification warning when the spot price goes above your bid
+* Spot instances are reclaimed within a 2-minute notification warning when the spot price goes above your bid
 * Used for batch jobs, Big Data analysis, or workloads that are resilient to failures
 * Not great for critical jobs or databases
 #### Dedicated Instances
@@ -75,7 +75,7 @@ If your machine is stopped and then restarted, the public IP will change
 * Physical dedicated Ec2 server for your use
 * Full control of Ec2 Instance placement
 * Visibility into the underlying sockets / physical cores of the hardware
-* Allocated for your account for a 3 year period reservation
+* Allocated for your account for a 3-year period reservation
 * More expensive
 * Useful for software that have a complicated licensing model (Bring your own License)
 * Or for a companies that have strong regulatory or compliance needs
@@ -120,7 +120,7 @@ If your machine is stopped and then restarted, the public IP will change
 - AMIs can be built for Linux or Windows machines 
 
 ### Why you use a custom AMI?
-- Using a custom built AMI can provide the following advantages:
+- Using a custom-built AMI can provide the following advantages:
   - Pre-installed packages needed
   - Faster boot time (no need for long ec2 user data at boot time
   - Machine comes configured with monitoring / enterprise software

@@ -9,7 +9,7 @@ The same way RDS is to get managed Relational Databases, ElastiCache is to get m
 * Implementing ElastiCache involves heavy application code changes
 
 #### Solution Architecture - DB Cache
-* Applications queries ElastiCache, if not available, get from RDS and store in ElastiCache
+* Application queries ElastiCache, if not available, get from RDS and store in ElastiCache
 * Helps relieve load in RDS
 * Cache must have an invalidation strategy to make sure only the most current data is used in there
 User Session Store
@@ -34,7 +34,7 @@ User Session Store
 #### Memcached Overview
 * Memcached is an in-memory object store
 * Multi-node for partitioning of data (sharding)
-* Multi-threaded architecture
+* Multithreading architecture
 * Cache doesn’t survive reboots
 * Use cases:
 * Quick retrieval of objects from memory
@@ -62,7 +62,7 @@ Write Through – Add or Update cache when database is updated
 #### Cache Evictions and Time-to-live (TTL)
 - Cache eviction can occur in three ways: 
 	- You delete the item explicitly in the cache
-	- Item is evicted because the memory is full and it’s not recently used (LRU) 
+	- Item is evicted because the memory is full, and it’s not recently used (LRU) 
 	- You set an item time-to-live (TTL)
 - TTL are helpful for any kind of data: 
 	- Leaderboards

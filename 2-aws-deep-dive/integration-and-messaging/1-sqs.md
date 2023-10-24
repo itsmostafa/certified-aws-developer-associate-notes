@@ -23,7 +23,7 @@ What's a queue?
 ## Delay Queue
 
 - Delay a message so a consumer doesn't see it immediately
-    - up to 15 minute delay
+    - up to 15-minute delay
 - Default is 0 seconds making messages available right away
 - You can set a default at queue level
 - YOu can override the default using the **DelaySeconds** parameter
