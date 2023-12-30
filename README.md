@@ -83,6 +83,8 @@
   * If you are getting a network timeout when trying to SSH into your EC2 instance, then your security groups are misconfigured
   * Security groups reference IP address, CIDR block, Security group, but NOT DNS name
 
+- Website Notes: [Certified Developer - Associate Notes](https://aws-dva-notes.shrithik.cloud/)
+
 # Contributors
 
 Please feel free to contribute by making a Pull Request!
