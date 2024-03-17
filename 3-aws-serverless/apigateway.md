@@ -150,7 +150,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
         - 400: Bad Request
         - 403: Access Denied, WAF filtered
         - 429: Quota exceeded, Too Many Requests
-    -5xx server errors:
+    - 5xx server errors:
         - 502: Bad Gateway - incompatible output from the back-end or out-of-order invocation due to heavy loads
         - 503: Service Unavailable
         - 504: Integration Failure - Back-end request timeout exceeded
@@ -165,7 +165,7 @@ Allows us to create REST APIs which can be public and accessible to the clients.
 
 ## Security and IAM Permissions
 
--IAM Permissions:
+- IAM Permissions:
     - We should create an IAM policy if other AWS services access the API Gateway from the same account
     - We can leverage "Sig v4" capability where IAM credentials are in headers
     - Authentication = IAM | Authorization = IAM Policy
