@@ -1,6 +1,6 @@
 # Certified AWS Associate Developer Notes
 
-### 2023 AWS developer associate exam 
+### 2024 AWS developer associate exam 
 
 ## Table of contents
 
@@ -50,6 +50,8 @@
   - Fargate
 
 - [Exam Preparation](#exam-preparation)
+  - [Exam Paper 1](<4-exam-questions/AWS Certified Developer - Associate DVA-C02 ExamTopics1.pdf>)
+  - [Exam Paper 2](<4-exam-questions/AWS Certified Developer - Associate DVA-C02 ExamTopics2.pdf>)
 
 
 ## Exam Preparation
