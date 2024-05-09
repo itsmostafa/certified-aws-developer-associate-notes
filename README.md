@@ -1,6 +1,6 @@
-# Certified AWS Associate Developer Notes
+# AWS Certified Developer Associate Notes
 
-### 2023 AWS developer associate exam 
+### 2023 AWS Certified Developer Associate exam 
 
 ## Table of contents
 
@@ -56,12 +56,12 @@
 
 - Exam details
     - Two question types:
-        - Multiple Choice
+        - Multiple choice
         - Multiple response
     - Minimum passing score: 720/1000
     - Domains:
-        - Deployment: CICD, Beanstalk, Serverless
-        - Security: each service deep-dive + dedicated section
+        - Deployment: CI/CD, Beanstalk, Serverless
+        - Security: Each service deep-dive + dedicated section
         - Development with AWS Services: Serverless, API, SDK, & CLI
         - Refactoring: Understand all the AWS services for the best migration
         - Monitoring and Troubleshooting: CloudWAtch, CloudTrail, X-Ray
@@ -71,7 +71,7 @@
 
 - EC2 + IAM Exam Checklist
   * Know how to SSH into EC2 (and change .pem file permissions) 
-  * Know how to properly use security groups 
+  * Know how to properly use Security Groups 
   * Know the fundamental differences between private vs public vs elastic IP 
   * Know how to use User Data to customize your instance at boot time 
   * Know that you can build custom AMI to enhance your OS 
@@ -82,7 +82,14 @@
   * If you are getting a permission error exception when trying to SSH into your linux instance, then the key is missing chmod 400 permissions
   * If you are getting a network timeout when trying to SSH into your EC2 instance, then your security groups are misconfigured
   * Security groups reference IP address, CIDR block, Security group, but NOT DNS name
-
+  Definitely on Exam:
+  * Know serverless concepts very well (Lambda, API Gateway, DynamoDB, Fargate)
+  * Know how to deploy an application using Elastic Beanstalk and all deployment types
+  * Know how to deploy an application using CloudFormation
+  * Know how to deploy an application using CodePipeline
+  * Know how to deploy an application using CodeBuild/CodeDeploy
+  * Know Serverless Application Model (SAM) and SAM template anatomy
+    
 # Contributors
 
 Please feel free to contribute by making a Pull Request!
