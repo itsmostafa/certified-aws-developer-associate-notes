@@ -38,5 +38,7 @@
 - Express Function 
     - Maximum duration: 5 minutes
     - At-least-once workflow execution
-    - Execution start rate: 100_000 per second
+        - Asynchronous At-least once: Doesn’t wait for Workflow to complete
+        - Synchronous At-most once: Wait for Workflow to complete
+    - Execution start rate: 100,000 per second
     - Price per number of execution: much cheaper in general

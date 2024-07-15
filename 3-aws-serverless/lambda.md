@@ -321,11 +321,11 @@ dependency packages
 ## AWS Lambda Limits
 
 - Execution:
-    - Memory: 128MB -  3008MB (64MB increments)
+    - Memory: 128MB -  10GB (1MB increments)
     - Max execution time: 900 seconds (15 minutes)
     - Env. variables: 4KB
-    - Disk space (/tmp): 512MB
-    - Concurrent executions 1000 per account
+    - Disk space (/tmp): 512MB to 10GB
+    - Concurrent executions 1000 per account (can be increased)
 
 - Deployments:
     - Compressed: 50MB
