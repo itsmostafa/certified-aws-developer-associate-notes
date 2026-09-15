@@ -35,7 +35,7 @@ Pre-trained models available through Bedrock:
 In commercial Regions, access to all serverless models is enabled by default (no console opt-in). In GovCloud (US), models are still enabled manually on the Model access page (third-party models also in the linked commercial account):
 - First invocation of a third-party model auto-subscribes via AWS Marketplace (up to 15 min); caller needs `aws-marketplace:Subscribe`, `Unsubscribe`, `ViewSubscriptions`
 - Anthropic models on `bedrock-runtime` need a one-time use case form per account/org (`put-use-case-for-model-access`)
-- Invoking implies EULA acceptance; to block a model, deny `bedrock:InvokeModel` on it (SCP/IAM). Denying `aws-marketplace:Subscribe` alone does not block first use
+- Invoking implies EULA acceptance; to block a model, deny both `bedrock:InvokeModel` and `bedrock:InvokeModelWithResponseStream` on it (SCP/IAM); streaming APIs such as `ConverseStream` use the latter. Denying `aws-marketplace:Subscribe` alone does not block first use
 
 ### Endpoints
 
@@ -414,6 +414,15 @@ aws iam simulate-principal-policy \
   --policy-source-arn arn:aws:iam::123456789012:role/my-role \
   --action-names bedrock:InvokeModel \
   --resource-arns "arn:aws:bedrock:us-east-1:123456789012:inference-profile/us.anthropic.claude-sonnet-5"
+
+# The profile ARN can pass while cross-Region routing is still denied: also simulate each
+# destination-Region model ARN (models field of get-inference-profile) with the profile context
+aws iam simulate-principal-policy \
+  --policy-source-arn arn:aws:iam::123456789012:role/my-role \
+  --action-names bedrock:InvokeModel \
+  --resource-arns "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-sonnet-5" \
+                  "arn:aws:bedrock:us-west-2::foundation-model/anthropic.claude-sonnet-5" \
+  --context-entries '[{"ContextKeyName":"bedrock:InferenceProfileArn","ContextKeyType":"string","ContextKeyValues":["arn:aws:bedrock:us-east-1:123456789012:inference-profile/us.anthropic.claude-sonnet-5"]}]'
 ```
 
 ### ModelNotReadyException
