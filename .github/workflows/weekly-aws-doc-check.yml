@@ -44,38 +44,6 @@ jobs:
         id: check
         run: python scripts/check-aws-updates.py
 
-      - name: Commit tracking updates via PR
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add tracking/
-
-          # Check if there are changes to commit
-          if git diff --staged --quiet; then
-            echo "No tracking changes to commit"
-            exit 0
-          fi
-
-          # Create a unique branch for the tracking update
-          BRANCH_NAME="chore/update-tracking-$(date +%Y%m%d-%H%M%S)"
-          git checkout -b "$BRANCH_NAME"
-          git commit -m "chore: update tracking data"
-          git push -u origin "$BRANCH_NAME"
-
-          # Create a PR and auto-merge it
-          PR_URL=$(gh pr create \
-            --title "chore: update AWS doc check tracking data" \
-            --body "Automated update of tracking data from weekly AWS documentation check." \
-            --base main \
-            --head "$BRANCH_NAME")
-
-          echo "Created PR: $PR_URL"
-
-          # Enable auto-merge if the repo allows it
-          gh pr merge "$PR_URL" --auto --squash || echo "Auto-merge not enabled or not allowed"
-
       - name: Generate docs markdown for updates
         if: steps.check.outputs.updates_found == 'true'
         id: gen_docs
@@ -157,7 +125,10 @@ jobs:
           BRANCH_NAME="docs/aws-updates-${DOC_DATE}-$(date +%H%M%S)"
           git checkout main
           git checkout -b "$BRANCH_NAME"
-          git add "$DOC_PATH"
+          # Tracking ships with the docs so last_check only advances when the summary is merged
+          git add tracking/
+          # docs/ is gitignored for local use
+          git add -f -- "$DOC_PATH"
           if git diff --staged --quiet; then
             echo "No docs changes to commit"
             exit 0
@@ -166,7 +137,7 @@ jobs:
           git push -u origin "$BRANCH_NAME"
           PR_URL=$(gh pr create \
             --title "docs: AWS updates for ${DOC_DATE} (${UPDATE_COUNT})" \
-            --body "Automated summary of AWS documentation updates for ${DOC_DATE}. The new file is ${DOC_PATH}." \
+            --body "Automated summary of AWS documentation updates for ${DOC_DATE}. The new file is ${DOC_PATH}. Merging also advances tracking/last-check.json." \
             --base main \
             --head "$BRANCH_NAME" \
             --label "documentation,aws-update")
