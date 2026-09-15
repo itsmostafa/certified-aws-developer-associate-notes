@@ -126,27 +126,8 @@ Skills include metadata showing when content was last updated, so you always kno
 
 1. Fork this repository
 2. Create a feature branch
-3. Add or update skills following the SKILL.md template
+3. Add or update skills, following the structure of the existing ones
 4. Submit a pull request
-
-### SKILL.md Template
-
-```yaml
----
-name: service-name
-description: Service description. Use when <trigger phrases>.
----
-
-# AWS Service Name
-
-## Overview
-## Core Concepts
-## Common Patterns
-## CLI Reference
-## Best Practices
-## Troubleshooting
-## References
-```
 
 ## License
 
