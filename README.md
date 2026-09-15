@@ -50,13 +50,27 @@ Because the skills are local and pre compressed, it is far more token efficient,
 ### Codex CLI
 
 ```bash
-$skill-installer install https://github.com/itsmostafa/aws-agent-skills/<skill-name>
+# Add the marketplace
+codex plugin marketplace add itsmostafa/aws-agent-skills
+
+# Install the plugin
+codex plugin add aws-agent-skills@aws-agent-skills
+
+# Verify
+codex plugin list -m aws-agent-skills
 ```
 
-For example, to install the `rlhf` skill:
+To pull the latest skills later:
 
 ```bash
-$skill-installer install https://github.com/itsmostafa/aws-agent-skills/rlhf
+codex plugin marketplace upgrade aws-agent-skills
+```
+
+To uninstall:
+
+```bash
+codex plugin remove aws-agent-skills@aws-agent-skills
+codex plugin marketplace remove aws-agent-skills
 ```
 
 ## Available Skills
@@ -112,27 +126,8 @@ Skills include metadata showing when content was last updated, so you always kno
 
 1. Fork this repository
 2. Create a feature branch
-3. Add or update skills following the SKILL.md template
+3. Add or update skills, following the structure of the existing ones
 4. Submit a pull request
-
-### SKILL.md Template
-
-```yaml
----
-name: service-name
-description: Service description. Use when <trigger phrases>.
----
-
-# AWS Service Name
-
-## Overview
-## Core Concepts
-## Common Patterns
-## CLI Reference
-## Best Practices
-## Troubleshooting
-## References
-```
 
 ## License
 
