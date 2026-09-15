@@ -33,6 +33,7 @@ Detailed patterns for ECS task definitions.
 | 4096 (4 vCPU) | 8-30 GB (1 GB increments) |
 | 8192 (8 vCPU) | 16-60 GB (4 GB increments) |
 | 16384 (16 vCPU) | 32-120 GB (8 GB increments) |
+| 32768 (32 vCPU) | 60 GB, 120 GB, 244 GB (Linux, x86 or ARM) |
 
 ## Container Definition Examples
 
@@ -339,6 +340,28 @@ Detailed patterns for ECS task definitions.
 }
 ```
 
+### tmpfs (Memory-Backed Scratch)
+
+Linux tasks on Fargate, Managed Instances, and EC2. Good for caches, short-lived secrets, and writable paths with `readonlyRootFilesystem`. Data is gone when the task stops.
+
+```json
+{
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "readonlyRootFilesystem": true,
+      "linuxParameters": {
+        "tmpfs": [
+          {"containerPath": "/tmp", "size": 256, "mountOptions": ["noexec", "nosuid"]}
+        ]
+      }
+    }
+  ]
+}
+```
+
+`size` is MiB (required); `mountOptions` optional.
+
 ## Resource Limits
 
 ### Per-Container Limits
@@ -455,6 +478,6 @@ Detailed patterns for ECS task definitions.
 
 Conditions:
 - `START`: Container has started
-- `COMPLETE`: Container ran and exited with code 0
-- `SUCCESS`: Container completed successfully
+- `COMPLETE`: Container ran to completion (any exit code)
+- `SUCCESS`: Container exited with code 0
 - `HEALTHY`: Container health check passed

@@ -1,7 +1,7 @@
 ---
 name: ecs
 description: AWS ECS container orchestration for running Docker containers. Use when deploying containerized applications, configuring task definitions, setting up services, managing clusters, or troubleshooting container issues.
-last_updated: "2026-01-07"
+last_updated: "2026-09-14"
 doc_source: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/
 ---
 
@@ -220,6 +220,35 @@ aws cloudwatch put-metric-alarm \
   --alarm-actions <scale-in-policy-arn>
 ```
 
+**Backlog per task (AWS-recommended):** Raw queue depth over-scales. Target-track `queue depth / RunningTaskCount` via metric math instead; Application Auto Scaling manages the alarms. Requires Container Insights on the cluster (`RunningTaskCount` in `ECS/ContainerInsights`). With 0 running tasks the divisor has no data, so this cannot scale *from* zero; keep the alarm pattern above when `min-capacity` is 0.
+
+```bash
+# TargetValue = acceptable latency / avg processing time per message (e.g. 10s / 0.1s = 100)
+aws application-autoscaling put-scaling-policy \
+  --service-namespace ecs \
+  --resource-id service/batch-cluster/queue-processor \
+  --scalable-dimension ecs:service:DesiredCount \
+  --policy-name sqs-backlog-per-task \
+  --policy-type TargetTrackingScaling \
+  --target-tracking-scaling-policy-configuration '{
+    "TargetValue": 100,
+    "CustomizedMetricSpecification": {
+      "Metrics": [
+        {"Id": "m1", "ReturnData": false, "MetricStat": {"Stat": "Sum",
+          "Metric": {"Namespace": "AWS/SQS", "MetricName": "ApproximateNumberOfMessagesVisible",
+            "Dimensions": [{"Name": "QueueName", "Value": "my-queue"}]}}},
+        {"Id": "m2", "ReturnData": false, "MetricStat": {"Stat": "Average",
+          "Metric": {"Namespace": "ECS/ContainerInsights", "MetricName": "RunningTaskCount",
+            "Dimensions": [{"Name": "ClusterName", "Value": "batch-cluster"},
+                           {"Name": "ServiceName", "Value": "queue-processor"}]}}},
+        {"Id": "e1", "Expression": "m1 / m2", "ReturnData": true}
+      ]
+    }
+  }'
+```
+
+**Protect in-flight work from scale-in:** the worker sets `ProtectionEnabled=true` while processing (container agent endpoint `$ECS_AGENT_URI/task-protection/v1/state`, or `aws ecs update-task-protection --cluster <c> --tasks <id> --protection-enabled --expires-in-minutes 60`) and clears it when done. Task role needs `ecs:GetTaskProtection` and `ecs:UpdateTaskProtection`. Service tasks only.
+
 **Fargate Spot interruption handling:** Spot tasks receive a SIGTERM 2 minutes before termination. Catch it in your application for graceful shutdown. For SQS consumers, call `ChangeMessageVisibility` on in-flight messages so they return to the queue rather than timing out.
 
 ### Auto Scaling
@@ -248,6 +277,15 @@ aws application-autoscaling put-scaling-policy \
     "ScaleOutCooldown": 60,
     "ScaleInCooldown": 120
   }'
+```
+
+**Faster scaling with 20-second metrics:** enable high-resolution service metrics, then use `ECSServiceAverageCPUUtilizationHighResolution` or `ECSServiceAverageMemoryUtilizationHighResolution` as the `PredefinedMetricType`. On an existing service the `--monitoring` change triggers a deployment; create the high-res policy only after it completes. Not supported with `CODE_DEPLOY`/`EXTERNAL` deployment controllers. Extra CloudWatch charges apply.
+
+```bash
+aws ecs update-service \
+  --cluster my-cluster \
+  --service web-service \
+  --monitoring "metricConfigurations=[{metricNames=[CPUUtilization,MemoryUtilization],resolutionSeconds=20}]"
 ```
 
 ## CLI Reference
@@ -297,6 +335,7 @@ aws application-autoscaling put-scaling-policy \
 - **Store secrets in Secrets Manager** or Parameter Store
 - **Use private subnets** with NAT gateway
 - **Enable CloudTrail** for API auditing
+- **Cap task size with IAM** — `ecs:task-cpu` / `ecs:task-memory` condition keys apply to `RunTask` and `StartTask` as well as `RegisterTaskDefinition`, `CreateService`, `UpdateService`
 
 ### Performance
 
@@ -319,10 +358,30 @@ aws ecs update-service \
   --deployment-configuration '{
     "deploymentCircuitBreaker": {
       "enable": true,
-      "rollback": true
+      "rollback": true,
+      "resetOnHealthyTask": true,
+      "thresholdConfiguration": {"type": "BOUNDED_PERCENT", "value": 50}
     }
   }'
 ```
+
+- **Tune circuit breaker threshold:** default `BOUNDED_PERCENT`/50 = 50% of desired count, clamped to 3-200 failures. `UNBOUNDED_PERCENT` drops the clamp (large services); `COUNT` uses `value` as a fixed failure count (e.g. low for fast dev rollbacks). `resetOnHealthyTask: false` counts failures cumulatively instead of consecutively.
+- **Early success criteria** (rolling only): mark the deployment successful once `healthyPercent` of desired tasks are healthy on the new revision; the rest launch via normal service scaling. `healthyPercent` must be between `minimumHealthyPercent` and 100; replica services default to `minimumHealthyPercent` 100, so set it explicitly when using a lower `healthyPercent`. After early completion, circuit breaker and alarm rollback no longer apply. `sourceServiceRevisionCleanup`: `BLOCKING` drains old tasks before success; `DEFERRED` declares success first and drains old tasks asynchronously (long-lived connections, scale-in protection).
+
+```bash
+aws ecs update-service \
+  --cluster my-cluster \
+  --service web-service \
+  --deployment-configuration '{
+    "strategy": "ROLLING",
+    "minimumHealthyPercent": 75,
+    "earlySuccessCriteria": {"enable": true, "healthyPercent": 90, "sourceServiceRevisionCleanup": "BLOCKING"}
+  }'
+```
+
+- **Service Connect zone-aware routing** is on by default (prefers same-AZ endpoints, cuts cross-AZ cost); existing services need one redeploy to pick it up.
+- **EC2 launch type: migrate to Amazon Linux 2023** ECS-optimized AMIs. AL2 ECS-optimized AMIs reached end of life June 30, 2026 (no new AMIs, agent pinned).
+- **Fargate:** platform version `1.3.0` was deprecated June 15, 2026. Use `LATEST` or `1.4.0`.
 
 ### Cost Optimization
 
@@ -417,6 +476,32 @@ aws ecs describe-services \
 - Health check failing on new tasks
 - Not enough capacity
 - Target group health checks failing
+
+### Action Logs (What ECS Did During a Deployment)
+
+Opt-in per cluster. Timestamped records of actions ECS takes during service deployments (state transitions, rollbacks, lifecycle hooks) and Managed Daemon lifecycle, with `logLevel` INFO/WARN/ERROR and status reasons. Keeps failure metadata past the 1-hour stopped-task retention. Billed as CloudWatch vended logs.
+
+```bash
+aws logs put-delivery-source \
+  --name my-ecs-action-logs \
+  --resource-arn arn:aws:ecs:us-east-1:123456789012:cluster/my-cluster \
+  --log-type EcsActionLogs
+
+aws logs put-delivery-destination \
+  --name my-ecs-logs-destination \
+  --output-format json \
+  --delivery-destination-configuration '{"destinationResourceArn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/vendedlogs/ecs/action-logs/my-cluster"}'
+
+aws logs create-delivery \
+  --delivery-source-name my-ecs-action-logs \
+  --delivery-destination-arn arn:aws:logs:us-east-1:123456789012:delivery-destination:my-ecs-logs-destination
+```
+
+**Requires:** `logs:PutDeliverySource`, `logs:PutDeliveryDestination`, `logs:CreateDelivery`, `logs:GetDelivery`, `ecs:AllowVendedLogDeliveryForResource`; the log group resource policy must allow `delivery.logs.amazonaws.com` to `logs:CreateLogStream`/`logs:PutLogEvents`. One log stream per service/daemon ARN.
+
+### OOM Kills After Moving EC2 Hosts to AL2023
+
+AL2023 uses cgroup v2: with only task-level `memory`, the container cannot see the limit, so JVMs and similar runtimes size heap from host memory. Set container-level `memory` equal to the task memory, or set `ECS_PROPAGATE_TASK_MEMORY_LIMIT_CGROUPV2=true` in `/etc/ecs/ecs.config` (agent 1.104.0+). Reported memory also includes page cache on cgroup v2, so utilization reads higher than on AL2.
 
 ### Cannot Pull Image from ECR
 
