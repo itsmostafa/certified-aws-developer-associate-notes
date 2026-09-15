@@ -1,7 +1,7 @@
 ---
 name: cloudwatch
 description: AWS CloudWatch monitoring for logs, metrics, alarms, and dashboards. Use when setting up monitoring, creating alarms, querying logs with Insights, configuring metric filters, building dashboards, or troubleshooting application issues.
-last_updated: "2026-01-07"
+last_updated: "2026-09-14"
 doc_source: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/
 ---
 
@@ -39,7 +39,9 @@ Log data from AWS services and applications:
 
 Automated actions based on metric thresholds:
 - **States**: OK, ALARM, INSUFFICIENT_DATA
-- **Actions**: SNS notifications, Auto Scaling, EC2 actions
+- **Actions**: SNS notifications, Lambda functions, Auto Scaling, EC2 actions, Systems Manager OpsItems
+- **Types**: metric (incl. metric math, anomaly detection, Metrics Insights), composite, log (scheduled Logs Insights query evaluated M-out-of-N on query results)
+- **Mute rules**: scheduled windows that mute actions while alarms keep evaluating
 
 ## Common Patterns
 
@@ -199,6 +201,35 @@ aws logs put-metric-filter \
     metricName=ErrorCount,metricNamespace=MyApp,metricValue=1,defaultValue=0
 ```
 
+### Create a Log Alarm
+
+Alarm directly on a Logs Insights query (no metric filter needed). CloudWatch creates and manages the underlying scheduled query. The `ScheduledQueryRoleARN` role must trust `logs.amazonaws.com` and allow `logs:StartQuery` and `logs:GetQueryResults` on the log group ARNs, plus `logs:StopQuery` and `logs:DescribeLogGroups` on `"Resource": "*"` (these two support no resource-level permissions, so a log-group-scoped statement never matches them).
+
+```bash
+# ALARM when >100 errors in 3 of the last 5 query runs
+aws cloudwatch put-log-alarm \
+  --alarm-name "HighErrorCount" \
+  --comparison-operator GreaterThanThreshold \
+  --threshold 100 \
+  --query-results-to-evaluate 5 \
+  --query-results-to-alarm 3 \
+  --treat-missing-data notBreaching \
+  --alarm-actions arn:aws:sns:us-east-1:123456789012:alerts \
+  --scheduled-query-configuration '{
+    "QueryString": "fields @timestamp, @message | filter @message like /ERROR/",
+    "LogGroupIdentifiers": ["/aws/lambda/MyFunction"],
+    "ScheduledQueryRoleARN": "arn:aws:iam::123456789012:role/ScheduledQueryRole",
+    "AggregationExpression": "count(*)",
+    "ScheduleConfiguration": {
+      "ScheduleExpression": "rate(10 minutes)",
+      "StartTimeOffset": 600
+    }
+  }'
+
+# Log alarms are omitted from describe-alarms unless requested
+aws cloudwatch describe-alarms --alarm-types LogAlarm
+```
+
 ### Publish Custom Metrics
 
 ```python
@@ -275,7 +306,12 @@ aws cloudwatch put-dashboard \
 | Command | Description |
 |---------|-------------|
 | `aws cloudwatch put-metric-alarm` | Create or update alarm |
-| `aws cloudwatch describe-alarms` | List alarms |
+| `aws cloudwatch put-log-alarm` | Create or update log query alarm |
+| `aws cloudwatch describe-alarms` | List alarms (`--alarm-types LogAlarm` for log alarms) |
+| `aws cloudwatch describe-alarm-contributors` | Show breaching contributors of a multi-contributor alarm |
+| `aws cloudwatch put-alarm-mute-rule` | Create or update scheduled mute window |
+| `aws cloudwatch list-alarm-mute-rules` | List mute rules (`--statuses SCHEDULED ACTIVE EXPIRED`) |
+| `aws cloudwatch delete-alarm-mute-rule` | Delete mute rule (unmutes immediately) |
 | `aws cloudwatch set-alarm-state` | Manually set alarm state |
 | `aws cloudwatch delete-alarms` | Delete alarms |
 
@@ -305,6 +341,11 @@ aws cloudwatch put-dashboard \
 - **Set appropriate evaluation periods** to avoid flapping
 - **Include OK actions** to track recovery
 - **Use anomaly detection** for dynamic thresholds
+- **Use log alarms** instead of metric filter + metric alarm for query-based conditions; set `--treat-missing-data notBreaching` for sparse errors, `breaching` to detect logs that stop arriving
+- **Stagger log alarm schedules** — concurrent scheduled query executions per account are capped at 100
+- **Set `--warm-up-configuration`** on alarms created alongside new resources (1-2880 min) to avoid noise before metrics publish
+- **Use `--evaluation-window WallClockWindow={Timezone=...}`** for daily/weekly batch or backup alarms; keep the default sliding window for Auto Scaling
+- **Use mute rules for maintenance**, not `disable-alarm-actions`; `enable-alarm-actions` does not unmute an active mute rule
 
 ### Logs
 
@@ -344,6 +385,8 @@ aws cloudwatch list-metrics \
 - Metric not being published
 - Dimensions mismatch
 - Evaluation period too short
+- Warm-up period still active (ends early once data fills the window unless `OnlyStartEvaluatingAfterWarmUpPeriodEnds=true`)
+- Log alarm: just created/updated (query, schedule, or log group changes reset state), scheduled query role lacks permissions (`EvaluationState` = `EVALUATION_ERROR`, see `StateReason`), or ingestion lag (shift window back with `EndTimeOffset`)
 
 **Debug:**
 
@@ -357,6 +400,10 @@ aws cloudwatch get-metric-statistics \
   --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
   --period 60 \
   --statistics Sum
+
+# Log alarm: check evaluation state and reason
+aws cloudwatch describe-alarms --alarm-types LogAlarm --alarm-names HighErrorCount \
+  --query 'LogAlarms[].[StateValue,EvaluationState,StateReason]'
 ```
 
 ### Log Events Not Appearing
