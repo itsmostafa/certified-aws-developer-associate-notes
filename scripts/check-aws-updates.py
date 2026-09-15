@@ -142,7 +142,8 @@ def check_service_feed(service: str, config: dict, since: datetime) -> list:
 
         for entry in feed.entries:
             pub_date = parse_rss_date(entry.get("published_parsed"))
-            if pub_date > since:
+            # Upper bound skips entries with bogus future dates that would repeat every run
+            if since < pub_date <= datetime.now(timezone.utc):
                 title = entry.get("title", "No title")
                 description = entry.get("description", entry.get("summary", ""))
                 link = entry.get("link", config["doc_url"])
@@ -175,7 +176,7 @@ def check_whats_new_for_services(services: list, since: datetime) -> list:
 
         for entry in feed.entries:
             pub_date = parse_rss_date(entry.get("published_parsed"))
-            if pub_date > since:
+            if since < pub_date <= datetime.now(timezone.utc):
                 title = entry.get("title", "No title")
                 description = entry.get("description", entry.get("summary", ""))
                 link = entry.get("link", "")
@@ -257,7 +258,7 @@ def main():
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
-            f.write(f"updates_found={len(all_updates) > 0}\n")
+            f.write(f"updates_found={str(len(all_updates) > 0).lower()}\n")
             f.write(f"update_count={len(all_updates)}\n")
 
     print(f"\nTotal significant updates found: {len(all_updates)}")
