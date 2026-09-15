@@ -203,7 +203,7 @@ aws logs put-metric-filter \
 
 ### Create a Log Alarm
 
-Alarm directly on a Logs Insights query (no metric filter needed). CloudWatch creates and manages the underlying scheduled query. The `ScheduledQueryRoleARN` role must trust `logs.amazonaws.com` and allow `logs:StartQuery`, `logs:StopQuery`, `logs:GetQueryResults`, `logs:DescribeLogGroups` on the log groups.
+Alarm directly on a Logs Insights query (no metric filter needed). CloudWatch creates and manages the underlying scheduled query. The `ScheduledQueryRoleARN` role must trust `logs.amazonaws.com` and allow `logs:StartQuery` and `logs:GetQueryResults` on the log group ARNs, plus `logs:StopQuery` and `logs:DescribeLogGroups` on `"Resource": "*"` (these two support no resource-level permissions, so a log-group-scoped statement never matches them).
 
 ```bash
 # ALARM when >100 errors in 3 of the last 5 query runs
