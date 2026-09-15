@@ -139,6 +139,62 @@ aws cloudwatch put-composite-alarm \
   --alarm-actions arn:aws:sns:us-east-1:123456789012:alerts
 ```
 
+### Log Alarm (Multi-Contributor)
+
+Evaluates a scheduled Logs Insights query. A `by` clause in `AggregationExpression` tracks each group as a contributor; the alarm is in ALARM if any contributor breaches. SNS/Lambda actions fire per contributor.
+
+```bash
+aws cloudwatch put-log-alarm \
+  --alarm-name "EndpointLatency" \
+  --comparison-operator GreaterThanThreshold \
+  --threshold 2000 \
+  --query-results-to-evaluate 3 \
+  --query-results-to-alarm 2 \
+  --alarm-actions arn:aws:sns:us-east-1:123456789012:alerts \
+  --scheduled-query-configuration '{
+    "QueryString": "fields endpoint, latency | filter ispresent(latency)",
+    "LogGroupIdentifiers": ["/app/api"],
+    "ScheduledQueryRoleARN": "arn:aws:iam::123456789012:role/ScheduledQueryRole",
+    "AggregationExpression": "avg(latency) by endpoint | sort desc",
+    "ScheduleConfiguration": {
+      "ScheduleExpression": "rate(5 minutes)",
+      "StartTimeOffset": 420,
+      "EndTimeOffset": 120
+    }
+  }'
+
+# Which contributors are in ALARM
+aws cloudwatch describe-alarm-contributors --alarm-name EndpointLatency
+```
+
+- Aggregation functions: `count(*)`, `avg`, `sum`, `min`, `max`; `bin()` not allowed in the `by` clause
+- Limits: 5 `by` fields, 500 contributors returned per run (sort by value so the worst are kept; `EvaluationState` = `PARTIAL_DATA` when exceeded), 100 contributors in ALARM
+- `--action-log-line-count` (0-50) adds raw log lines to SNS email notifications; requires `--action-log-line-role-arn` (role trusting `cloudwatch.amazonaws.com` with `logs:GetQueryResults`)
+- `EndTimeOffset` shifts the window back to allow for ingestion delay
+
+### Wall Clock Window and Warm-Up
+
+```bash
+# Daily backup check aligned to local midnight, quiet for 60 min after create/update
+aws cloudwatch put-metric-alarm \
+  --alarm-name "DailyBackupMissing" \
+  --namespace MyApp \
+  --metric-name BackupsCompleted \
+  --statistic Sum \
+  --period 86400 \
+  --evaluation-periods 1 \
+  --threshold 1 \
+  --comparison-operator LessThanThreshold \
+  --treat-missing-data breaching \
+  --evaluation-window 'WallClockWindow={Timezone=America/New_York}' \
+  --warm-up-configuration WarmUpPeriodDurationInMinutes=60 \
+  --alarm-actions arn:aws:sns:us-east-1:123456789012:alerts
+```
+
+- Wall clock windows support periods 60, 300, 3600, 86400, 604800 only; not PromQL alarms; data is reflected only after the clock period ends
+- Metrics Insights alarms with a wall clock window: Period x (EvaluationPeriods + 1) must be <= 3 hours
+- Warm-up (1-2880 min) applies to metric and log alarms; alarm stays INSUFFICIENT_DATA with no actions. Ends early once data fills the window unless `OnlyStartEvaluatingAfterWarmUpPeriodEnds=true`
+
 ## Common Alarm Patterns
 
 ### Lambda Function Health
@@ -428,14 +484,39 @@ SEARCH('{AWS/Lambda,FunctionName} MetricName="Errors"', 'Sum', 60)
 --alarm-actions arn:aws:automate:us-east-1:ec2:recover
 ```
 
-### Lambda Trigger
+### Lambda Function
 
-Use SNS as intermediary:
+Alarms invoke Lambda directly (function, version, or alias ARN). Grant the alarm permission first:
 
 ```bash
-# Subscribe Lambda to SNS topic
-aws sns subscribe \
-  --topic-arn arn:aws:sns:us-east-1:123456789012:alerts \
-  --protocol lambda \
-  --notification-endpoint arn:aws:lambda:us-east-1:123456789012:function:HandleAlarm
+aws lambda add-permission \
+  --function-name HandleAlarm \
+  --statement-id AlarmAction \
+  --action lambda:InvokeFunction \
+  --principal lambda.alarms.cloudwatch.amazonaws.com \
+  --source-account 123456789012 \
+  --source-arn arn:aws:cloudwatch:us-east-1:123456789012:alarm:HighCPU
+
+# Then on the alarm:
+--alarm-actions arn:aws:lambda:us-east-1:123456789012:function:HandleAlarm
 ```
+
+## Alarm Mute Rules
+
+Mute actions (all states) during scheduled windows; alarms keep evaluating and EventBridge events still emit. Up to 100 alarms per rule.
+
+```bash
+# Mute every Sunday 02:00 for 4 hours
+aws cloudwatch put-alarm-mute-rule \
+  --name weekly-maintenance \
+  --rule 'Schedule={Expression=cron(0 2 * * SUN),Duration=PT4H,Timezone=America/New_York}' \
+  --mute-targets AlarmNames=HighCPU,HighMemory
+
+# One-time window: Expression=at(2026-12-23T00:00),Duration=P7D
+aws cloudwatch list-alarm-mute-rules --statuses ACTIVE
+aws cloudwatch delete-alarm-mute-rule --alarm-mute-rule-name weekly-maintenance
+```
+
+- When the window ends (or the rule is deleted/updated or the alarm removed from targets), muted actions run if the alarm is still in the state it was muted in
+- `enable-alarm-actions` does not unmute; `disable-alarm-actions` is permanent until re-enabled
+- IAM: `cloudwatch:PutAlarmMuteRule` is needed on the mute rule resource and on each targeted alarm
