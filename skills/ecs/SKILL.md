@@ -366,7 +366,7 @@ aws ecs update-service \
 ```
 
 - **Tune circuit breaker threshold:** default `BOUNDED_PERCENT`/50 = 50% of desired count, clamped to 3-200 failures. `UNBOUNDED_PERCENT` drops the clamp (large services); `COUNT` uses `value` as a fixed failure count (e.g. low for fast dev rollbacks). `resetOnHealthyTask: false` counts failures cumulatively instead of consecutively.
-- **Early success criteria** (rolling only): mark the deployment successful once `healthyPercent` of desired tasks are healthy on the new revision; the rest launch via normal service scaling. `healthyPercent` must be between `minimumHealthyPercent` and 100. After early completion, circuit breaker and alarm rollback no longer apply. `sourceServiceRevisionCleanup`: `BLOCKING` drains old tasks before success; `DEFERRED` declares success first and drains old tasks asynchronously (long-lived connections, scale-in protection).
+- **Early success criteria** (rolling only): mark the deployment successful once `healthyPercent` of desired tasks are healthy on the new revision; the rest launch via normal service scaling. `healthyPercent` must be between `minimumHealthyPercent` and 100; replica services default to `minimumHealthyPercent` 100, so set it explicitly when using a lower `healthyPercent`. After early completion, circuit breaker and alarm rollback no longer apply. `sourceServiceRevisionCleanup`: `BLOCKING` drains old tasks before success; `DEFERRED` declares success first and drains old tasks asynchronously (long-lived connections, scale-in protection).
 
 ```bash
 aws ecs update-service \
@@ -374,6 +374,7 @@ aws ecs update-service \
   --service web-service \
   --deployment-configuration '{
     "strategy": "ROLLING",
+    "minimumHealthyPercent": 75,
     "earlySuccessCriteria": {"enable": true, "healthyPercent": 90, "sourceServiceRevisionCleanup": "BLOCKING"}
   }'
 ```
