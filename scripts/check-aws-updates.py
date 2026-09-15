@@ -180,7 +180,9 @@ def check_whats_new_for_services(services: list, since: datetime) -> list:
                 title = entry.get("title", "No title")
                 description = entry.get("description", entry.get("summary", ""))
                 link = entry.get("link", "")
-                text = f"{title} {description}".lower()
+                # Match the title only; descriptions often name other services in passing
+                # (e.g. "using the AWS CLI, AWS SDKs, CloudFormation, CDK")
+                text = title.lower()
 
                 # Check if any of our fallback services are mentioned
                 for service in services:
