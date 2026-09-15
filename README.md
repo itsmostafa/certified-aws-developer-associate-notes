@@ -50,13 +50,27 @@ Because the skills are local and pre compressed, it is far more token efficient,
 ### Codex CLI
 
 ```bash
-$skill-installer install https://github.com/itsmostafa/aws-agent-skills/<skill-name>
+# Add the marketplace
+codex plugin marketplace add itsmostafa/aws-agent-skills
+
+# Install the plugin
+codex plugin add aws-agent-skills@aws-agent-skills
+
+# Verify
+codex plugin list -m aws-agent-skills
 ```
 
-For example, to install the `rlhf` skill:
+To pull the latest skills later:
 
 ```bash
-$skill-installer install https://github.com/itsmostafa/aws-agent-skills/rlhf
+codex plugin marketplace upgrade aws-agent-skills
+```
+
+To uninstall:
+
+```bash
+codex plugin remove aws-agent-skills@aws-agent-skills
+codex plugin marketplace remove aws-agent-skills
 ```
 
 ## Available Skills
