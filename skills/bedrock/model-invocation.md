@@ -12,7 +12,7 @@ import json
 
 bedrock = boto3.client('bedrock-runtime')
 
-def invoke_claude(messages, system=None, max_tokens=1024, temperature=1.0):
+def invoke_claude(messages, system=None, max_tokens=4096, temperature=1.0):
     body = {
         'anthropic_version': 'bedrock-2023-05-31',
         'max_tokens': max_tokens,
@@ -22,15 +22,28 @@ def invoke_claude(messages, system=None, max_tokens=1024, temperature=1.0):
 
     if system:
         body['system'] = system
+    if temperature != 1.0:
+        # Thinking (on by default for Sonnet 5/Opus 5) is incompatible with changed temperature
+        body['thinking'] = {'type': 'disabled'}
 
     response = bedrock.invoke_model(
-        modelId='anthropic.claude-3-sonnet-20240229-v1:0',
+        modelId='us.anthropic.claude-sonnet-5',
         contentType='application/json',
         accept='application/json',
         body=json.dumps(body)
     )
 
     return json.loads(response['body'].read())
+
+# Claude Sonnet 5/Opus 5 use adaptive thinking by default: content can include
+# 'thinking' blocks before 'text'. Disable with body['thinking'] = {'type': 'disabled'},
+# tune with body['output_config'] = {'effort': 'low'|'medium'|'high'}.
+# Thinking isn't compatible with changed temperature/top_p/top_k: disable it to set those.
+# max_tokens caps thinking + text, so a truncated response may have no text block.
+def response_text(result):
+    if result['stop_reason'] == 'max_tokens':
+        print('Truncated at max_tokens: raise it or lower output_config.effort')
+    return next((b['text'] for b in result['content'] if b['type'] == 'text'), '')
 
 # Text generation
 result = invoke_claude(
@@ -39,7 +52,7 @@ result = invoke_claude(
     temperature=0.7
 )
 
-# With image (Claude 3 vision)
+# With image
 import base64
 
 with open('diagram.png', 'rb') as f:
@@ -64,29 +77,6 @@ result = invoke_claude(
         ]
     }]
 )
-```
-
-### Titan Text (Amazon)
-
-```python
-def invoke_titan_text(prompt, max_tokens=512, temperature=0.7):
-    response = bedrock.invoke_model(
-        modelId='amazon.titan-text-express-v1',
-        contentType='application/json',
-        accept='application/json',
-        body=json.dumps({
-            'inputText': prompt,
-            'textGenerationConfig': {
-                'maxTokenCount': max_tokens,
-                'temperature': temperature,
-                'topP': 0.9,
-                'stopSequences': []
-            }
-        })
-    )
-
-    result = json.loads(response['body'].read())
-    return result['results'][0]['outputText']
 ```
 
 ### Titan Embeddings (Amazon)
@@ -164,50 +154,79 @@ def invoke_mistral(prompt, max_tokens=512, temperature=0.7):
     return result['outputs'][0]['text']
 ```
 
-### Stable Diffusion (Image Generation)
+### Anthropic Messages API (bedrock-runtime)
+
+Use the Anthropic SDK against the `/anthropic` route with a short-term bearer token (`pip install -U anthropic aws-bedrock-token-generator`):
 
 ```python
-import base64
+from anthropic import Anthropic
+from aws_bedrock_token_generator import provide_token
 
-def generate_image(prompt, negative_prompt='', cfg_scale=7, seed=0):
-    response = bedrock.invoke_model(
-        modelId='stability.stable-diffusion-xl-v1',
-        contentType='application/json',
-        accept='application/json',
-        body=json.dumps({
-            'text_prompts': [
-                {'text': prompt, 'weight': 1.0},
-                {'text': negative_prompt, 'weight': -1.0}
-            ],
-            'cfg_scale': cfg_scale,
-            'seed': seed,
-            'steps': 50,
-            'width': 1024,
-            'height': 1024
-        })
-    )
+token = provide_token(region="us-east-1")
 
-    result = json.loads(response['body'].read())
-    image_data = base64.b64decode(result['artifacts'][0]['base64'])
+client = Anthropic(
+    base_url="https://bedrock-runtime.us-east-1.amazonaws.com/anthropic",
+    api_key=token,
+)
 
-    with open('output.png', 'wb') as f:
-        f.write(image_data)
-
-    return 'output.png'
+response = client.messages.create(
+    model="global.anthropic.claude-sonnet-5",
+    max_tokens=4096,  # caps thinking + text
+    messages=[{"role": "user", "content": "Explain microservices."}],
+)
 ```
+
+With a Bedrock API key over HTTP: `POST https://bedrock-runtime.{region}.amazonaws.com/anthropic/v1/messages` with headers `x-api-key` and `anthropic-version: 2023-06-01`.
+
+### OpenAI-Compatible APIs
+
+OpenAI SDK code works by changing base URL and key (Bedrock API key):
+
+```bash
+export OPENAI_API_KEY="<bedrock-api-key>"
+export OPENAI_BASE_URL="https://bedrock-runtime.us-east-1.amazonaws.com/openai/v1"  # recommended
+# export OPENAI_BASE_URL="https://bedrock-mantle.us-east-1.api.aws/openai/v1"      # mantle-only features
+```
+
+### Web Search (bedrock-mantle, Responses API)
+
+Server-side tool for supported OpenAI GPT models; not available on `bedrock-runtime`. Needs `bedrock-websearch:InvokeSearch` and `bedrock-websearch:InvokeFetch`.
+
+```python
+from openai import OpenAI
+
+client = OpenAI()  # OPENAI_BASE_URL=https://bedrock-mantle.us-west-2.api.aws/openai/v1
+
+response = client.responses.create(
+    model="openai.gpt-5.6-terra",
+    input="Summarize recent guidance on AWS Lambda cold starts.",
+    tools=[{
+        "type": "web_search",
+        "external_web_access": False,  # cache/index only; keeps data in AWS boundary
+        "search_context_size": "low",  # low | medium (default) | high
+    }],
+)
+print(response.output_text)
+# Citations: output[].content[].annotations[] with type == "url_citation" (must be shown to end users)
+```
+
+### Image Generation
+
+Stable Diffusion XL and Titan Text Express are no longer offered. Check [models at a glance](https://docs.aws.amazon.com/bedrock/latest/userguide/model-cards.html) for current image models (e.g. Stability AI Stable Image) and their request bodies.
 
 ## Converse API (Unified)
 
 The Converse API provides a unified interface across models.
 
 ```python
-def converse(messages, model_id, system=None, max_tokens=1024):
+def converse(messages, model_id, system=None, max_tokens=4096):
     params = {
         'modelId': model_id,
         'messages': messages,
+        # No temperature: thinking (default on Sonnet 5/Opus 5) rejects changed values.
+        # To set one, also pass additionalModelRequestFields={'thinking': {'type': 'disabled'}}
         'inferenceConfig': {
-            'maxTokens': max_tokens,
-            'temperature': 0.7
+            'maxTokens': max_tokens
         }
     }
 
@@ -215,14 +234,17 @@ def converse(messages, model_id, system=None, max_tokens=1024):
         params['system'] = [{'text': system}]
 
     response = bedrock.converse(**params)
-    return response['output']['message']['content'][0]['text']
+    if response['stopReason'] == 'max_tokens':
+        print('Truncated at maxTokens (caps thinking + text)')
+    # Skip reasoningContent blocks from thinking models
+    return next((c['text'] for c in response['output']['message']['content'] if 'text' in c), '')
 
 # Works with any supported model
 result = converse(
     messages=[
         {'role': 'user', 'content': [{'text': 'What is Lambda?'}]}
     ],
-    model_id='anthropic.claude-3-sonnet-20240229-v1:0',
+    model_id='us.anthropic.claude-sonnet-5',
     system='Be concise.'
 )
 ```
@@ -253,7 +275,7 @@ def converse_with_tools(messages, tools, model_id):
             'tool_use_id': tool_use['toolUse']['toolUseId']
         }
 
-    return {'text': output['content'][0]['text']}
+    return {'text': next((c['text'] for c in output['content'] if 'text' in c), '')}
 
 # Define tools
 tools = [{
@@ -281,7 +303,7 @@ result = converse_with_tools(
         {'role': 'user', 'content': [{'text': 'What is the weather in Seattle?'}]}
     ],
     tools=tools,
-    model_id='anthropic.claude-3-sonnet-20240229-v1:0'
+    model_id='us.anthropic.claude-sonnet-5'
 )
 ```
 
@@ -316,7 +338,7 @@ def rag_query(query, knowledge_base_id, model_arn):
 result = rag_query(
     query='How do I configure S3 bucket policies?',
     knowledge_base_id='KNOWLEDGE_BASE_ID',
-    model_arn='arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-sonnet-20240229-v1:0'
+    model_arn='arn:aws:bedrock:us-east-1:123456789012:inference-profile/us.anthropic.claude-sonnet-5'
 )
 ```
 
@@ -344,17 +366,52 @@ def retrieve_context(query, knowledge_base_id, num_results=5):
     ]
 ```
 
+### Agentic Retrieval (Managed Knowledge Bases)
+
+SDK-only event stream. Needs `bedrock:AgenticRetrieveStream`, `bedrock:Retrieve`, `bedrock:GetDocumentContent`, `bedrock:InvokeModelWithResponseStream`.
+
+```python
+def agentic_retrieve(query, knowledge_base_id):
+    response = bedrock_agent.agentic_retrieve_stream(
+        messages=[{'role': 'user', 'content': {'text': query}}],
+        retrievers=[{
+            'configuration': {'knowledgeBase': {'knowledgeBaseId': knowledge_base_id}}
+        }],  # up to 5
+        agenticRetrieveConfiguration={
+            'foundationModelType': 'MANAGED',   # or CUSTOM + foundationModelConfiguration
+            'rerankingModelType': 'MANAGED'
+        },
+        generateResponse=True  # default
+    )
+
+    for event in response['stream']:
+        if 'responseEvent' in event:
+            print(event['responseEvent']['text'], end='')
+        elif 'result' in event:
+            # results[] deduplicated across iterations; generatedResponse.answer/citations
+            return event['result']
+```
+
+- AgentCore Memory: `memoryConfiguration={'memoryId': ..., 'sessionBinding': {'actorId': ..., 'sessionId': ...}, 'retrievalConfigs': [{'namespace': ...}]}` (needs `sessionBinding`, `retrievalConfigs`, or both). With `sessionBinding`, `messages` must hold only the current user query; `persistenceMode` `DEFAULT` writes the exchange back (requires `generateResponse=True`), `NONE` reads only
+- Guardrails via `policyConfiguration` support only `BLOCK` (no `MASK`)
+
+### Native Multimodal Knowledge Bases
+
+- Choose `twelvelabs.marengo-embed-3-0-v1:0` as the embedding model when creating a managed KB; parsing strategy must be `MULTI_MODAL_EMBEDDINGS` (no text chunking; configure audio/video segmentation instead)
+- Requires a multimodal storage S3 destination separate from the data source bucket; add a lifecycle rule only on `aws/bedrock/knowledge_bases/<kb-id>/<ds-id>/transient_data`
+- Query with text through `retrieve`; results carry segment start/end times. `retrieve_and_generate` and image queries are not supported
+
 ## Guardrails
 
 ```python
 def invoke_with_guardrails(prompt, guardrail_id, guardrail_version):
     response = bedrock.invoke_model(
-        modelId='anthropic.claude-3-sonnet-20240229-v1:0',
+        modelId='us.anthropic.claude-sonnet-5',
         contentType='application/json',
         accept='application/json',
         body=json.dumps({
             'anthropic_version': 'bedrock-2023-05-31',
-            'max_tokens': 1024,
+            'max_tokens': 4096,
             'messages': [{'role': 'user', 'content': prompt}]
         }),
         guardrailIdentifier=guardrail_id,
@@ -372,7 +429,7 @@ def invoke_with_guardrails(prompt, guardrail_id, guardrail_version):
 
     return {
         'blocked': False,
-        'text': result['content'][0]['text']
+        'text': next((b['text'] for b in result['content'] if b['type'] == 'text'), '')
     }
 ```
 
@@ -383,11 +440,13 @@ import boto3
 
 bedrock = boto3.client('bedrock')
 
-def create_batch_job(input_s3_uri, output_s3_uri, model_id, role_arn):
+def create_batch_job(input_s3_uri, output_s3_uri, model_id, role_arn,
+                     invocation_type='InvokeModel'):
     response = bedrock.create_model_invocation_job(
         jobName=f'batch-job-{int(time.time())}',
         modelId=model_id,
         roleArn=role_arn,
+        modelInvocationType=invocation_type,  # 'InvokeModel' (default) or 'Converse'
         inputDataConfig={
             's3InputDataConfig': {
                 's3Uri': input_s3_uri
@@ -403,8 +462,21 @@ def create_batch_job(input_s3_uri, output_s3_uri, model_id, role_arn):
     return response['jobArn']
 
 # Input format (JSONL file in S3)
+# InvokeModel: modelInput is the model-specific body
 # {"recordId": "1", "modelInput": {"anthropic_version": "...", "messages": [...]}}
-# {"recordId": "2", "modelInput": {"anthropic_version": "...", "messages": [...]}}
+# Converse: modelInput is a Converse request body
+# {"recordId": "2", "modelInput": {"messages": [{"role": "user", "content": [{"text": "..."}]}], "inferenceConfig": {"maxTokens": 1024}}}
+# Output record order is not guaranteed
+```
+
+```bash
+aws bedrock create-model-invocation-job \
+  --job-name my-batch-job \
+  --role-arn arn:aws:iam::123456789012:role/BedrockBatchRole \
+  --model-id <model-or-inference-profile-id> \
+  --model-invocation-type Converse \
+  --input-data-config '{"s3InputDataConfig": {"s3Uri": "s3://my-bucket/input/"}}' \
+  --output-data-config '{"s3OutputDataConfig": {"s3Uri": "s3://my-bucket/output/"}}'
 ```
 
 ## Error Handling
@@ -450,10 +522,12 @@ class BedrockInvoker:
 
 ## Provisioned Throughput
 
+Not available for inference profiles or Legacy models.
+
 ```bash
 # Create provisioned throughput
 aws bedrock create-provisioned-model-throughput \
-  --model-id anthropic.claude-3-sonnet-20240229-v1:0 \
+  --model-id <base-model-id-or-custom-model-arn> \
   --provisioned-model-name my-claude-capacity \
   --model-units 1
 
